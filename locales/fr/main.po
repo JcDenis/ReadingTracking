@@ -1,0 +1,50 @@
+# Language: Français
+# Module: ReadingTracking - 0.1
+# Date: 2025-05-04 11:21:26
+# Author: , contact@jcdenis.fr
+# Translated with translater 2025.03.03
+
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Project-Id-Version: ReadingTracking 0.1\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2025-05-04T11:21:26+00:00\n"
+"Last-Translator: Jean-Christian Denis\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: src/BackendBehaviors.php:36
+msgid "Enable user reading tracking"
+msgstr "Activer le suivi de lecture pour les utilisateurs"
+
+#: src/BackendBehaviors.php:43
+msgid "Artifact to use:"
+msgstr "Artefact à utiliser :"
+
+#: src/BackendBehaviors.php:47
+msgid "This add artifact at the begining of unread posts titles. Or you can use custom templates instead."
+msgstr "Ajoute un artefact avant le titre d'un billet non lu. Sinon vous pouvez utiliser les balises de templates."
+
+#: src/FrontendBehaviors.php:88
+msgid "Reading tracking"
+msgstr "Suivi de lecture"
+
+#: src/FrontendBehaviors.php:99
+msgid "Add artifact on unread entries"
+msgstr "Ajouter l'artefact aux billets non lus"
+
+#: src/FrontendBehaviors.php:106
+msgid "Reset a post reading tracking on new comment"
+msgstr "Réinitialiser le suivi de lecture d'un billet lors d'un nouveau commentaire"
+
+#: src/FrontendBehaviors.php:113
+msgid "Mark all entires as read"
+msgstr "Marquer tous les billets comme lus"
+
+#: src/ReadingTracking.php:205
+msgid "Do not use artifact"
+msgstr "Ne pas utiliser l'artefact"
+
