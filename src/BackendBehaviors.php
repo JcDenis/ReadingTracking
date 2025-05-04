@@ -28,7 +28,7 @@ class BackendBehaviors
         if (!empty($_POST[My::id() . '_allread'])) {
             ReadingTracking::markReadPosts($user_id);
         } elseif (!empty($_POST[My::id() . '_reset'])) {
-            ReadingTracking::remarkReadPosts($user_id);
+            ReadingTracking::delReadPosts($user_id);
         }
 
         $user_prefs = App::userPreferences()->createFromUser($user_id, My::id());

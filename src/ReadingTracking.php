@@ -6,7 +6,7 @@ namespace Dotclear\Plugin\ReadingTracking;
 
 use Dotclear\App;
 use Dotclear\Database\MetaRecord;
-use Dotclear\Database\Statement\{ DeleteStatement, InsertStatement, SelectStatement };
+use Dotclear\Database\Statement\{ DeleteStatement, InsertStatement, JoinStatement, SelectStatement };
 use Dotclear\Helper\Html\Form\{ Img, Option };
 
 /**
@@ -119,50 +119,88 @@ class ReadingTracking
     }
 
     /**
+     * Get read posts of a user.
+     *
+     * @return  array<int, int>
+     */
+    public static function getReadPosts(string $user_id = ''): array
+    {
+        $sql = new SelectStatement();
+        $rs = $sql
+            ->column('P.post_id')
+            ->from($sql->as(self::table(), 'M'))
+            ->join(
+                (new JoinStatement())
+                    ->inner()
+                    ->from($sql->as(App::con()->prefix() . App::blog()::POST_TABLE_NAME, 'P'))
+                    ->on('P.post_id = M.post_id')
+                    ->statement()
+            )
+            ->where('M.meta_type = ' . $sql->quote(self::type()))
+            ->and('M.meta_id = ' . $sql->quote(empty($user_id) ? self::user() : App::con()->escapeStr($user_id)))
+            ->and('P.blog_id = ' . $sql->quote(App::blog()->id()))
+            ->select();
+
+        $res = [];
+        if (!is_null($rs)) {
+            while($rs->fetch()) {
+                $res[] = (int) $rs->f('post_id');
+            }
+        }
+
+        return $res;
+    }
+
+    /**
      * Mark all posts as read for a user.
      */
     public static function markReadPosts(string $user_id = ''): void
     {
-        self::remarkReadPosts();
-        //how whitout killing db?
-
         $values = [];
-        $rs = App::blog()->getPosts(['no_content' => true]);
-        while($rs->fetch()) {
+        $reads  = self::getReadPosts($user_id);
+        $posts  = App::blog()->getPosts(['no_content' => true]);
+        while($posts->fetch()) {
+            if (in_array((int) $posts->f('post_id'), $reads)) {
+                continue;
+            }
             $values[] = [
                 empty($user_id) ? self::user() : App::con()->escapeStr($user_id),
                 self::type(),
-                (int) $rs->f('post_id'),
+                (int) $posts->f('post_id'),
             ];
         }
 
-        $sql = new InsertStatement();
-        $sql
-            ->into(self::table())
-            ->columns([
-                'meta_id',
-                'meta_type',
-                'post_id',
-            ])
-            ->values($values)
-            ->insert();
+        if (!empty($values)) {
+            $sql = new InsertStatement();
+            $sql
+                ->into(self::table())
+                ->columns([
+                    'meta_id',
+                    'meta_type',
+                    'post_id',
+                ])
+                ->values($values)
+                ->insert();
+        }
     }
 
     /**
      * Delete all posts tracking for a user.
      */
-    public static function remarkReadPosts(string $user_id = ''): void
+    public static function delReadPosts(string $user_id = ''): void
     {
-        if (!self::user()) {
-        
-            return;
-        }
-
         $sql = new DeleteStatement();
         $sql
             ->from(self::table())
             ->where('meta_type = ' . $sql->quote(self::type()))
-            ->and('meta_id = ' . $sql->quote(empty($user_id) ? self::user() : $user_id))
+            ->and('meta_id = ' . $sql->quote(empty($user_id) ? self::user() : App::con()->escapeStr($user_id)))
+            ->and('post_id IN (' .
+                (new SelectStatement())
+                    ->column('post_id')
+                    ->from($sql->as(App::con()->prefix() . App::blog()::POST_TABLE_NAME, 'P'))
+                    ->where('blog_id = ' . $sql->quote(App::blog()->id()))
+                    ->statement() .
+            ')')
             ->delete();
     }
 
