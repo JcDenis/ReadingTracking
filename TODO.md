@@ -1,1 +1,1 @@
-* use js on frontend to add artifact
+* Add behavior to allow third party post type
