@@ -22,12 +22,14 @@ class FrontendBehaviors
 {
     /**
      * Set post as read.
+     *
+     * @param   ArrayObject<string, mixed>  $params
      */
     public static function publicPostBeforeGetPosts(ArrayObject $params, ?string $args): void
     {
         $rs = App::blog()->getPosts($params);
         if (!$rs->isEmpty()) {
-            ReadingTracking::setReadPost((int) $rs->f('post_id'));
+            ReadingTracking::markReadPost((int) $rs->f('post_id'));
         }
     }
 
@@ -67,11 +69,11 @@ class FrontendBehaviors
             My::prefs()->put('active', !empty($_POST[My::id() . $action . '_active']), 'boolean');
 
             if (!empty($_POST[My::id() . $action . '_allread'])) {
-                ReadingTracking::setReadPosts();
+                ReadingTracking::markReadPosts();
             }
 
             // need to reload user to update form values
-            App::auth()->checkUser(App::auth()->userID());
+            App::auth()->checkUser((string) App::auth()->userID());
 
             App::frontend()->context()->frontend_session->success = __('Profil successfully updated.');
         }

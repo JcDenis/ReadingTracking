@@ -28,6 +28,11 @@ class Backend extends Process
         }
 
         App::behavior()->addBehaviors([
+            'adminAfterUserCreate'          => BackendBehaviors::updateUser(...),
+            'adminAfterUserUpdate'          => BackendBehaviors::updateUser(...),
+            'adminBeforeUserOptionsUpdate'  => BackendBehaviors::updateUser(...),
+            'adminPreferencesFormV2'        => BackendBehaviors::preferencesForm(...),
+            'adminUserForm'                 => BackendBehaviors::userForm(...),
             'adminBlogPreferencesFormV2'    => BackendBehaviors::adminBlogPreferencesFormV2(...),
             'adminBeforeBlogSettingsUpdate' => BackendBehaviors::adminBeforeBlogSettingsUpdate(...),
         ]);

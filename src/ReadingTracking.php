@@ -48,7 +48,7 @@ class ReadingTracking
     /**
      * Mark a post as read for current user.
      */
-    public static function setReadPost(int $post_id): void
+    public static function markReadPost(int $post_id): void
     {
         if (!self::user()) {
 
@@ -70,36 +70,6 @@ class ReadingTracking
                 self::type(),
                 $post_id,
             ]])
-            ->insert();
-    }
-
-    /**
-     * Mark all posts as read for current user.
-     */
-    public static function setReadPosts(): void
-    {
-        self::resetReadPosts();
-        //how whitout killing db?
-
-        $values = [];
-        $rs = App::blog()->getPosts(['no_content' => true]);
-        while($rs->fetch()) {
-            $values[] = [
-                self::user(),
-                self::type(),
-                (int) $rs->f('post_id'),
-            ];
-        }
-
-        $sql = new InsertStatement();
-        $sql
-            ->into(self::table())
-            ->columns([
-                'meta_id',
-                'meta_type',
-                'post_id',
-            ])
-            ->values($values)
             ->insert();
     }
 
@@ -149,9 +119,39 @@ class ReadingTracking
     }
 
     /**
+     * Mark all posts as read for a user.
+     */
+    public static function markReadPosts(string $user_id = ''): void
+    {
+        self::remarkReadPosts();
+        //how whitout killing db?
+
+        $values = [];
+        $rs = App::blog()->getPosts(['no_content' => true]);
+        while($rs->fetch()) {
+            $values[] = [
+                empty($user_id) ? self::user() : App::con()->escapeStr($user_id),
+                self::type(),
+                (int) $rs->f('post_id'),
+            ];
+        }
+
+        $sql = new InsertStatement();
+        $sql
+            ->into(self::table())
+            ->columns([
+                'meta_id',
+                'meta_type',
+                'post_id',
+            ])
+            ->values($values)
+            ->insert();
+    }
+
+    /**
      * Delete all posts tracking for a user.
      */
-    public static function resetReadPosts(): void
+    public static function remarkReadPosts(string $user_id = ''): void
     {
         if (!self::user()) {
         
@@ -162,7 +162,7 @@ class ReadingTracking
         $sql
             ->from(self::table())
             ->where('meta_type = ' . $sql->quote(self::type()))
-            ->and('meta_id = ' . $sql->quote(self::user()))
+            ->and('meta_id = ' . $sql->quote(empty($user_id) ? self::user() : $user_id))
             ->delete();
     }
 
@@ -197,12 +197,12 @@ class ReadingTracking
     }
 
     /**
-     * @return array<in, Option>
+     * @return array<int, Option>
      */
     public static function getArtifactsCombo(): array
     {
         $options = [
-            __('Do not use artifact') => '',
+            new Option(__('Do not use artifact'), ''),
         ];
         foreach (self::getArtifacts() as $artifact) {
             $options[] = new Option(
