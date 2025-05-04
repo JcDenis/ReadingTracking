@@ -48,7 +48,7 @@ class FrontendTemplate
 
         return $if === [] ?
             $content :
-            '<?php if(' . implode(' ' . $operator . ' ', $if) . ') : ?>' . $content . '<?php endif; ?>';
+            '<?php if(App::blog()->settings()->get("' . My::id() . '")->get("active") && (' . implode(' ' . $operator . ' ', $if) . ')) : ?>' . $content . '<?php endif; ?>';
     }
 
     /**
@@ -60,7 +60,7 @@ class FrontendTemplate
      */
     public static function ReadingTrackingArtifact(ArrayObject $attr): string
     {
-        return self::filter($attr, ReadingTracking::class . '::getArtifact()');
+        return self::filter($attr, '(App::blog()->settings()->get("' . My::id() . '")->get("active") ? ' . ReadingTracking::class . '::getArtifact() : "")');
     }
 
     /**
@@ -70,6 +70,6 @@ class FrontendTemplate
      */
     public static function EntryTitle(ArrayObject $attr): string
     {
-        return self::filter($attr, 'App::frontend()->context()->posts->getArtifact() . " " . App::frontend()->context()->posts->post_title');
+        return self::filter($attr, '(App::blog()->settings()->get("' . My::id() . '")->get("active") ? App::frontend()->context()->posts->getArtifact() . " " : "") . App::frontend()->context()->posts->post_title');
     }
 }
