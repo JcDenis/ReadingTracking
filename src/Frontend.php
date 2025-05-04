@@ -28,12 +28,12 @@ class Frontend extends Process
             return false;
         }
 
-        App::frontend()->template()->addValue('EntryTitle', FrontendTemplate::EntryTitle(...));
         App::frontend()->template()->addBlock('ReadingTrackingIf', FrontendTemplate::ReadingTrackingIf(...));
 
         App::behavior()->addBehaviors([
             'publicPostBeforeGetPosts'    => FrontendBehaviors::publicPostBeforeGetPosts(...),
             'coreBlogGetPosts'            => FrontendBehaviors::coreBlogGetPosts(...),
+            'publicHeadContent'           => FrontendBehaviors::publicHeadContent(...),
             'publicFrontendSessionAction' => FrontendBehaviors::publicFrontendSessionAction(...),
             'publicFrontendSessionPage'   => FrontendBehaviors::publicFrontendSessionPage(...),
         ]);

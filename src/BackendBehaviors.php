@@ -95,7 +95,7 @@ class BackendBehaviors
             (new Para())
                 ->items([
                     (new Checkbox(My::id() . '_reset', false))
-                        ->value(1)
+                        ->value('1')
                         ->label(new Label(__('Reset reading tracking'), Label::IL_FT)),
                 ]),
         ];

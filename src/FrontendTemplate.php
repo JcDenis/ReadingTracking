@@ -62,14 +62,4 @@ class FrontendTemplate
     {
         return self::filter($attr, '(App::blog()->settings()->get("' . My::id() . '")->get("active") ? ' . ReadingTracking::class . '::getArtifact() : "")');
     }
-
-    /**
-     * Overload entry title to add artifact.
-     *
-     * @param      ArrayObject<string, mixed>    $attr     The attributes
-     */
-    public static function EntryTitle(ArrayObject $attr): string
-    {
-        return self::filter($attr, '(App::blog()->settings()->get("' . My::id() . '")->get("active") ? App::frontend()->context()->posts->getArtifact() . " " : "") . App::frontend()->context()->posts->post_title');
-    }
 }

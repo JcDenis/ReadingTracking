@@ -9,6 +9,7 @@ use Dotclear\App;
 use Dotclear\Database\MetaRecord;
 use Dotclear\Exception\PreconditionException;
 use Dotclear\Helper\Html\Form\{ Checkbox, Div, Form, Hidden, Label, Submit, Text };
+use Dotclear\Helper\Html\Html;
 use Dotclear\Helper\Network\Http;
 
 /**
@@ -57,6 +58,18 @@ class FrontendBehaviors
                 ReadingTracking::delReadPost((int) $post);
             }
         }
+    }
+
+    public static function publicHeadContent(): string
+    {
+        if (in_array(App::url()->getType(), ['default', 'home', 'post', 'category', 'tag', 'search', 'archive', 'categories'])
+            && ReadingTracking::useArtifact()
+        ) {
+            echo My::jsLoad('frontend') .
+            Html::jsJson(My::id(), ['url' => App::blog()->url() . App::url()->getBase(My::id()) . '/']);
+        }
+
+        return '';
     }
 
     public static function publicFrontendSessionAction(string $action): void
