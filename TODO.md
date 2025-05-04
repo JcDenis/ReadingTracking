@@ -1,0 +1,1 @@
+* use js on frontend to add artifact

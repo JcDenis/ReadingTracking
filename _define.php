@@ -18,7 +18,7 @@ $this->registerModule(
     'Reading tracking',
     'Mark post as read for connected users.',
     'Jean-Christian Paul Denis and Contributors',
-    '0.1',
+    '0.2',
     [
         'requires'    => [
             ['core', '2.34'],
