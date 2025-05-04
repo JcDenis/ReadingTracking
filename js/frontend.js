@@ -3,14 +3,14 @@
 
 dotclear.getReadingTrackingArtifact = (post) => {
   try {
-    var request = new XMLHttpRequest(),
+    const request = new XMLHttpRequest(),
         requestUrl = dotclear.ReadingTracking.url + post.id.substr(1),
         target = post.querySelector('.post-title');
 
     if (target) {
       request.onreadystatechange = function() {
         if ( request.readyState === 4 && request.status === 200 ) {
-          var response = JSON.parse( request.responseText );
+          const response = JSON.parse( request.responseText );
 
           target.prepend(response.ret)
         }
