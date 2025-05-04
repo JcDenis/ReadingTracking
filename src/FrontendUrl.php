@@ -30,6 +30,7 @@ class FrontendUrl extends Url
         $rs = App::blog()->getPosts(['post_id' => (int) $args]);
 
         Http::head(200);
+        header('Content-type: application/json');
         echo json_encode([
             'ret' => $rs->isEmpty() ? '' : $rs->getArtifact(),
         ]);
