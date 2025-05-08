@@ -62,7 +62,15 @@ class FrontendBehaviors
 
     public static function publicHeadContent(): string
     {
-        if (in_array(App::url()->getType(), ['default', 'home', 'post', 'category', 'tag', 'search', 'archive', 'categories'])
+        /**
+         * @var     ArrayObject<int, string>    $types
+         */
+        $types = new ArrayObject(['default', 'home', 'post', 'category', 'tag', 'search', 'archive']);
+
+        # --BEHAVIOR-- ReadingTrackingUrlTypes -- ArrayObject
+        App::behavior()->callBehavior('ReadingTrackingUrlTypes', $types);
+
+        if (in_array(App::url()->getType(), iterator_to_array($types))
             && ReadingTracking::useArtifact()
         ) {
             echo My::jsLoad('frontend') .
