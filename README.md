@@ -16,7 +16,7 @@ _ReadingTracking_ is a plugin for the open-source web publishing software called
 
 * Dotclear 2.34
 * PHP 8.1+
-* Plugin FrontendSession 0.20
+* Plugin FrontendSession 0.21
 * Dotclear admin permission for configuration
 
 ## USAGE
