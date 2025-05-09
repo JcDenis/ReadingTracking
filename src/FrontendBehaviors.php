@@ -80,7 +80,7 @@ class FrontendBehaviors
         return '';
     }
 
-    public static function publicFrontendSessionAction(string $action): void
+    public static function FrontendSessionAction(string $action): void
     {
         if ($action == 'rtupd'
             && My::settings()->get('active')
@@ -100,7 +100,7 @@ class FrontendBehaviors
         }
     }
 
-    public static function publicFrontendSessionPage(): void
+    public static function FrontendSessionPage(): void
     {
         if (My::settings()->get('active')
             && App::auth()->check(My::id(), App::blog()->id())

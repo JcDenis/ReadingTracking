@@ -31,11 +31,11 @@ class Frontend extends Process
         App::frontend()->template()->addBlock('ReadingTrackingIf', FrontendTemplate::ReadingTrackingIf(...));
 
         App::behavior()->addBehaviors([
-            'publicPostBeforeGetPosts'    => FrontendBehaviors::publicPostBeforeGetPosts(...),
-            'coreBlogGetPosts'            => FrontendBehaviors::coreBlogGetPosts(...),
-            'publicHeadContent'           => FrontendBehaviors::publicHeadContent(...),
-            'publicFrontendSessionAction' => FrontendBehaviors::publicFrontendSessionAction(...),
-            'publicFrontendSessionPage'   => FrontendBehaviors::publicFrontendSessionPage(...),
+            'publicPostBeforeGetPosts' => FrontendBehaviors::publicPostBeforeGetPosts(...),
+            'coreBlogGetPosts'         => FrontendBehaviors::coreBlogGetPosts(...),
+            'publicHeadContent'        => FrontendBehaviors::publicHeadContent(...),
+            'FrontendSessionAction'    => FrontendBehaviors::FrontendSessionAction(...),
+            'FrontendSessionPage'      => FrontendBehaviors::FrontendSessionPage(...),
         ]);
 
         return true;
