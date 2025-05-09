@@ -18,11 +18,11 @@ $this->registerModule(
     'Reading tracking',
     'Mark post as read for connected users.',
     'Jean-Christian Paul Denis and Contributors',
-    '0.4',
+    '0.5',
     [
         'requires'    => [
             ['core', '2.34'],
-            ['FrontendSession', '0.21'],
+            ['FrontendSession', '0.23'],
         ],
         'settings'    => ['blog' => '#params.' . $this->id . '_params'],
         'permissions' => 'My',
