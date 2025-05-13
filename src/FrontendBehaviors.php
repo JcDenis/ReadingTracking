@@ -117,7 +117,7 @@ class FrontendBehaviors
 
             echo (new Form(My::id(). $post_id))
                 ->method('post')
-                ->action('')
+                ->action('#p' . $post_id)
                 ->class('post-reading-tracking')
                 ->fields([
                     (new Submit([My::id() . 'subscribe'], $check ? __('Unsubscribe') : __('Subscribe')))
