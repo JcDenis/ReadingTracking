@@ -1,3 +1,9 @@
+ReadingTracking 0.6 - 2025.05.13
+==========================================================
+* Bump FrontendSession from 0.23 to 0.24
+* Add email notification
+* Fix reading tracking
+
 ReadingTracking 0.5 - 2025.05.09
 ==========================================================
 * Bump FrontendSession from 0.21 to 0.23
