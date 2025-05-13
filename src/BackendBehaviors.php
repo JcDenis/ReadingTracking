@@ -7,7 +7,7 @@ namespace Dotclear\Plugin\ReadingTracking;
 use Dotclear\App;
 use Dotclear\Core\Backend\Notices;
 use Dotclear\Database\{ Cursor, MetaRecord };
-use Dotclear\Helper\Html\Form\{ Checkbox, Div, Fieldset, Label, Legend, Note, Para, Select, Text };
+use Dotclear\Helper\Html\Form\{ Checkbox, Div, Fieldset, Input, Label, Legend, Note, Para, Select, Text };
 use Dotclear\Helper\Html\Html;
 use Dotclear\Interface\Core\BlogSettingsInterface;
 
@@ -127,6 +127,17 @@ class BackendBehaviors
                 (new Note())
                     ->class('form-note')
                     ->text(__('This add artifact at the begining of unread posts titles. Or you can use custom templates instead.')),
+                (new Para())
+                    ->items([
+                        (new Input(My::id() . 'email_from'))
+                            ->size(65)
+                            ->maxlength(255)
+                            ->value($blog_settings->get(My::id())->get('email_from'))
+                            ->label(new Label(__('Email sender for entries subscriptions:'), Label::OL_TF)),
+                    ]),
+                (new Note())
+                    ->class('form-note')
+                    ->text(__('Leave it empty to disable entries subscriptions.')),
             ])
             ->render();
     }
@@ -138,8 +149,9 @@ class BackendBehaviors
     {
         $change = $blog_settings->get(My::id())->get('artifact') !== $_POST[My::id() . 'artifact'];
 
-        $blog_settings->get(My::id())->put('active', !empty($_POST[My::id() . 'active']));
-        $blog_settings->get(My::id())->put('artifact', (string) $_POST[My::id() . 'artifact']);
+        $blog_settings->get(My::id())->put('active', !empty($_POST[My::id() . 'active']), 'boolean');
+        $blog_settings->get(My::id())->put('artifact', (string) $_POST[My::id() . 'artifact'], 'string');
+        $blog_settings->get(My::id())->put('email_from', (string) $_POST[My::id() . 'email_from'], 'string');
 
         // Need to clean template EntryTitle
         if ($change) {

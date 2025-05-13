@@ -1,50 +1,93 @@
 # Language: Français
-# Module: ReadingTracking - 0.1
-# Date: 2025-05-04 11:21:26
+# Module: ReadingTracking - 0.5.1
+# Date: 2025-05-13 16:26:41
 # Author: , contact@jcdenis.fr
 # Translated with translater 2025.03.03
 
 msgid ""
 msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
-"Project-Id-Version: ReadingTracking 0.1\n"
+"Project-Id-Version: ReadingTracking 0.5.1\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2025-05-04T11:21:26+00:00\n"
+"PO-Revision-Date: 2025-05-13T16:26:41+00:00\n"
 "Last-Translator: Jean-Christian Denis\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: src/BackendBehaviors.php:36
-msgid "Enable user reading tracking"
-msgstr "Activer le suivi de lecture pour les utilisateurs"
-
-#: src/BackendBehaviors.php:43
-msgid "Artifact to use:"
-msgstr "Artefact à utiliser :"
-
-#: src/BackendBehaviors.php:47
-msgid "This add artifact at the begining of unread posts titles. Or you can use custom templates instead."
-msgstr "Ajoute un artefact avant le titre d'un billet non lu. Sinon vous pouvez utiliser les balises de templates."
-
-#: src/FrontendBehaviors.php:88
-msgid "Reading tracking"
-msgstr "Suivi de lecture"
-
-#: src/FrontendBehaviors.php:99
+#: src/BackendBehaviors.php:81
+#: src/FrontendBehaviors.php:195
 msgid "Add artifact on unread entries"
 msgstr "Ajouter l'artefact aux billets non lus"
 
-#: src/FrontendBehaviors.php:106
+#: src/BackendBehaviors.php:87
+#: src/FrontendBehaviors.php:202
 msgid "Reset a post reading tracking on new comment"
 msgstr "Réinitialiser le suivi de lecture d'un billet lors d'un nouveau commentaire"
 
-#: src/FrontendBehaviors.php:113
-msgid "Mark all entires as read"
-msgstr "Marquer tous les billets comme lus"
+#: src/BackendBehaviors.php:93
+#: src/FrontendBehaviors.php:209
+msgid "Mark all entries as read"
+msgstr "Marquer toutes les entrées comme lues"
 
-#: src/ReadingTracking.php:205
+#: src/BackendBehaviors.php:99
+msgid "Reset reading tracking"
+msgstr "Remettre à zéro le suivi de lecture"
+
+#: src/BackendBehaviors.php:118
+msgid "Enable user reading tracking"
+msgstr "Activer le suivi de lecture pour les utilisateurs"
+
+#: src/BackendBehaviors.php:125
+msgid "Artifact to use:"
+msgstr "Artefact à utiliser :"
+
+#: src/BackendBehaviors.php:129
+msgid "This add artifact at the begining of unread posts titles. Or you can use custom templates instead."
+msgstr "Ajoute un artefact avant le titre d'un billet non lu. Sinon vous pouvez utiliser les balises de templates."
+
+#: src/BackendBehaviors.php:136
+msgid "Email sender for entries subscriptions:"
+msgstr "Adresse email de l'expéditeur des notifacitons :"
+
+#: src/BackendBehaviors.php:140
+msgid "Leave it empty to disable entries subscriptions."
+msgstr "Laisser vide pour désactiver les notifications par email"
+
+#: src/FrontendBehaviors.php:119
+msgid "Unsubscribe"
+msgstr "Se désabonner"
+
+#: src/FrontendBehaviors.php:184
+msgid "Reading tracking"
+msgstr "Suivi de lecture"
+
+#: src/FrontendBehaviors.php:216
+msgid "Remove email notifiaction from all entries"
+msgstr "Retirer les notifications par email des tous les billets"
+
+#: src/ReadingTracking.php:313
 msgid "Do not use artifact"
 msgstr "Ne pas utiliser l'artefact"
+
+#: src/ReadingTracking.php:480
+msgid "New comment"
+msgstr "Nouveau commentaire"
+
+#: src/ReadingTracking.php:483
+msgid "You receive this email as you have subscribed to new comments on an entry."
+msgstr "Vous recevez cet email car vous avez souscrit aux notifications de nouveau commentaire sur un billet."
+
+#: src/ReadingTracking.php:485
+msgid "Entry:"
+msgstr "Billet :"
+
+#: src/ReadingTracking.php:487
+msgid "Follow this link to see new comment or to unsubscribe to this entry."
+msgstr "Suivez ce lien pour voir les nouveaux commentaires ou pour vous désabonner."
+
+#: src/ReadingTracking.php:488
+msgid "Thank you %s for your interest on our blog."
+msgstr "Merci %s pour l'intérêt porté à ce blog."
 

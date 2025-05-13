@@ -6,7 +6,7 @@ namespace Dotclear\Plugin\ReadingTracking;
 
 use ArrayObject;
 use Dotclear\App;
-use Dotclear\Database\MetaRecord;
+use Dotclear\Database\{ Cursor, MetaRecord };
 use Dotclear\Exception\PreconditionException;
 use Dotclear\Helper\Html\Form\{ Checkbox, Div, Form, Hidden, Label, Submit, Text };
 use Dotclear\Helper\Html\Html;
@@ -22,20 +22,9 @@ use Dotclear\Helper\Network\Http;
 class FrontendBehaviors
 {
     /**
-     * Set post as read.
-     *
-     * @param   ArrayObject<string, mixed>  $params
-     */
-    public static function publicPostBeforeGetPosts(ArrayObject $params, ?string $args): void
-    {
-        $rs = App::blog()->getPosts($params);
-        if (!$rs->isEmpty()) {
-            ReadingTracking::markReadPost((int) $rs->f('post_id'));
-        }
-    }
-
-    /**
      * Extend posts record.
+     * 
+     * @see     RecordExtendPost
      */
     public static function coreBlogGetPosts(MetaRecord $rs): void
     {
@@ -50,18 +39,36 @@ class FrontendBehaviors
      */
     public static function coreBlogAfterTriggerComments(array $comments, array $posts): void
     {
-        if (My::settings()->get('active')
-            && App::auth()->check(My::id(), App::blog()->id())
-            && My::prefs()->get('comment')
-        ) {
-            foreach($posts as $post) {
-                ReadingTracking::delReadPost((int) $post);
+        if (My::prefs()->get('comment')) {
+            foreach($posts as $post_id) {
+                ReadingTracking::delReadPost((int) $post_id);
             }
         }
     }
 
+    /**
+     * Set post as read.
+     *
+     * @param   ArrayObject<string, mixed>  $params
+     */
+    public static function publicPostBeforeGetPosts(ArrayObject $params, ?string $args): void
+    {
+        $rs = App::blog()->getPosts($params);
+        if (!$rs->isEmpty()) {
+            ReadingTracking::markReadPost((int) $rs->f('post_id'));
+        }
+    }
+
+    /**
+     * Add JS for tracking to page headers.
+     */
     public static function publicHeadContent(): string
     {
+        $tplset = App::themes()->moduleInfo(App::blog()->settings()->get('system')->get('theme'), 'tplset');
+        if (in_array($tplset, ['dotty', /*'mustek'*/])) {
+            echo My::cssLoad('frontend-' . $tplset);
+        }
+
         /**
          * @var     ArrayObject<int, string>    $types
          */
@@ -80,17 +87,80 @@ class FrontendBehaviors
         return '';
     }
 
+    /**
+     * Add subscribe button after post content.
+     */
+    public static function publicEntryAfterContent(): void
+    {
+        if (My::settings()->get('active')
+            && App::auth()->userId() != ''
+        ) {
+            if (empty($_POST[My::id() . 'post'])) {
+                $post_id = (int) App::frontend()->context()->posts->f('post_id');
+                $check   = ReadingTracking::isSubscriber($post_id);
+            } else {
+                ReadingTracking::checkForm();
+
+                $post_id = (int) $_POST[My::id() . 'post'];
+                $check   = !ReadingTracking::isSubscriber($post_id);
+
+                if ($check) {
+                    ReadingTracking::addSubscriber($post_id);
+                } else {
+                    ReadingTracking::delSubscriber($post_id);
+                }
+            }
+
+            echo (new Form(My::id(). $post_id))
+                ->method('post')
+                ->action('')
+                ->class('post-reading-tracking')
+                ->fields([
+                    (new Submit([My::id() . 'subscribe'], $check ? __('Unsubscribe') : __('Subscribe')))
+                        ->title('Receive an email when new comment is posted'),
+                    (new Hidden([My::id() .'check'], App::nonce()->getNonce())),
+                    (new Hidden([My::id() .'post'], (string) $post_id)),
+                ])
+                ->render();
+        }
+    }
+
+    /**
+     * Send mail to post subscribers on new comment.
+     *
+     * This works only if comments a created and put online from frontend !
+     */
+    public static function publicAfterCommentCreate(Cursor $cur, int|string $comment_id): void
+    {
+        if (My::settings()->get('active') && !App::status()->comment()->isRestricted((int) $cur->getField('comment_status'))) {
+            ReadingTracking::mailSubscribers((int) $cur->getField('post_id'));
+        }
+    }
+
+    /**
+     * Save session page user settings.
+     */
     public static function FrontendSessionAction(string $action): void
     {
         if ($action == 'rtupd'
             && My::settings()->get('active')
             && App::auth()->check(My::id(), App::blog()->id())
         ) {
+            $old_comment = (bool) My::prefs()->get('comment');
+            $new_comment = !empty($_POST[My::id() . $action . '_comment']);
+
+            if ($old_comment !== $new_comment) {
+                ReadingTracking::switchReadType($new_comment);
+            }
+
             My::prefs()->put('comment', !empty($_POST[My::id() . $action . '_comment']), 'boolean');
             My::prefs()->put('active', !empty($_POST[My::id() . $action . '_active']), 'boolean');
 
             if (!empty($_POST[My::id() . $action . '_allread'])) {
                 ReadingTracking::markReadPosts();
+            }
+            if (!empty($_POST[My::id() . $action . '_unsubscribe'])) {
+                ReadingTracking::resetSubscriber();
             }
 
             // need to reload user to update form values
@@ -100,6 +170,9 @@ class FrontendBehaviors
         }
     }
 
+    /**
+     * Add session page user settings form.
+     */
     public static function FrontendSessionPage(): void
     {
         if (My::settings()->get('active')
@@ -133,7 +206,14 @@ class FrontendBehaviors
                             ->items([
                                 (new Checkbox(My::id() . $action . '_allread', false))
                                     ->value('1')
-                                    ->label(new Label(__('Mark all entires as read'), Label::OL_FT)),
+                                    ->label(new Label(__('Mark all entries as read'), Label::OL_FT)),
+                            ]),
+                        (new Div())
+                            ->class('inputfield')
+                            ->items([
+                                (new Checkbox(My::id() . $action . '_unsubscribe', false))
+                                    ->value('1')
+                                    ->label(new Label(__('Remove email notifiaction from all entries'), Label::OL_FT)),
                             ]),
                         (new Div())
                             ->class('controlset')
