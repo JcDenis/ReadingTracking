@@ -95,14 +95,18 @@ class FrontendBehaviors
         if (My::settings()->get('active')
             && App::auth()->userId() != ''
         ) {
+            $post_id = (int) App::frontend()->context()->posts->f('post_id');
+            $check   = ReadingTracking::isSubscriber($post_id);
+
             if (empty($_POST[My::id() . 'post'])) {
-                $post_id = (int) App::frontend()->context()->posts->f('post_id');
-                $check   = ReadingTracking::isSubscriber($post_id);
-            } else {
+            }
+
+            if (!empty($_POST[My::id() . 'post']) 
+                && $post_id == (int) $_POST[My::id() . 'post']
+            ) {
                 ReadingTracking::checkForm();
 
-                $post_id = (int) $_POST[My::id() . 'post'];
-                $check   = !ReadingTracking::isSubscriber($post_id);
+                $check   = !$check;
 
                 if ($check) {
                     ReadingTracking::addSubscriber($post_id);
