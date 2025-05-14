@@ -98,7 +98,9 @@ class FrontendBehaviors
             $post_id = (int) App::frontend()->context()->posts->f('post_id');
             $check   = ReadingTracking::isSubscriber($post_id);
 
-            if (empty($_POST[My::id() . 'post'])) {
+            if (!App::frontend()->context()->posts->commentsActive()) {
+
+                return;
             }
 
             if (!empty($_POST[My::id() . 'post']) 
