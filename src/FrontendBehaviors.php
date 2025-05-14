@@ -22,6 +22,13 @@ use Dotclear\Helper\Network\Http;
 class FrontendBehaviors
 {
     /**
+     * Supported URL types.
+     *
+     * @var     null|array<int,string>   $types
+     */
+    private static ?array $types = null;
+
+    /**
      * Extend posts record.
      * 
      * @see     RecordExtendPost
@@ -69,17 +76,7 @@ class FrontendBehaviors
             echo My::cssLoad('frontend-' . $tplset);
         }
 
-        /**
-         * @var     ArrayObject<int, string>    $types
-         */
-        $types = new ArrayObject(['default', 'home', 'post', 'category', 'tag', 'search', 'archive']);
-
-        # --BEHAVIOR-- ReadingTrackingUrlTypes -- ArrayObject
-        App::behavior()->callBehavior('ReadingTrackingUrlTypes', $types);
-
-        if (in_array(App::url()->getType(), iterator_to_array($types))
-            && ReadingTracking::useArtifact()
-        ) {
+        if (self::isURLType() && ReadingTracking::useArtifact()) {
             echo My::jsLoad('frontend') .
             Html::jsJson(My::id(), ['url' => App::blog()->url() . App::url()->getBase(My::id()) . '/']);
         }
@@ -94,6 +91,7 @@ class FrontendBehaviors
     {
         if (My::settings()->get('active')
             && App::auth()->userId() != ''
+            && self::isURLType()
         ) {
             $post_id = (int) App::frontend()->context()->posts->f('post_id');
             $check   = ReadingTracking::isSubscriber($post_id);
@@ -234,5 +232,22 @@ class FrontendBehaviors
             ])
             ->render();
         }
+    }
+
+    private static function isURLType(): bool
+    {
+        if (is_null(self::$types)) {
+            /**
+             * @var     ArrayObject<int, string>    $types
+             */
+            $types = new ArrayObject(explode(',', My::settings()->get('url_types')));
+
+            # --BEHAVIOR-- ReadingTrackingUrlTypes -- ArrayObject
+            App::behavior()->callBehavior('ReadingTrackingUrlTypes', $types);
+
+            self::$types = iterator_to_array($types);
+        }
+
+        return in_array(App::url()->getType(), self::$types);
     }
 }

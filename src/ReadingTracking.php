@@ -295,13 +295,14 @@ class ReadingTracking
      */
     public static function getArtifacts(): array
     {
-        return [
+        return array_unique([
+            My::settings()->get('artifact') ?: self::DEFAULT_ARTIFACT,
             self::DEFAULT_ARTIFACT,
             "\u{23F5}",
             "\u{23F0}",
             "\u{2605}",
             "\u{2606}",
-        ];
+        ]);
     }
 
     /**
