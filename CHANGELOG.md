@@ -1,3 +1,10 @@
+ReadingTracking 0.7 - 2025.05.14
+==========================================================
+* Add install process
+* Allow to cusomized supported public URL type from settings
+* Allow to customized artifact from settings
+* Check public URL types for each buttons
+
 ReadingTracking 0.6 - 2025.05.13
 ==========================================================
 * Bump FrontendSession from 0.23 to 0.24

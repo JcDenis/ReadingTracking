@@ -10,7 +10,7 @@
 
 _ReadingTracking_ is a plugin for the open-source web publishing software called [Dotclear](https://www.dotclear.org).
 
-> Allow user to post from frontend.
+> Mark post as read for connected users..
 
 ## REQUIREMENTS
 
@@ -26,6 +26,7 @@ Dotaddict repository. (See Dotclear's documentation to know how do this)
 
 * Once it's done you can manage _Reading tracking_ option from blog preferences.
 * On blog, each connected users can set their preferences for their reading tracking.
+* On blog, each connected user can subscribe to email notifications on new entry comment.
 
 ## LINKS
 
