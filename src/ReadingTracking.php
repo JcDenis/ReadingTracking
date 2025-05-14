@@ -82,6 +82,8 @@ class ReadingTracking
                 ->from(self::table())
                 ->set('meta_type = ' . $sql->quote($to_comment ? self::META_TRACK_COMMENT : self::META_TRACK_POST))
                 ->where('post_id' . $sql->in($posts, 'int'))
+                ->and('meta_type = ' . $sql->quote(!$to_comment ? self::META_TRACK_COMMENT : self::META_TRACK_POST))
+                ->and('meta_id = ' . self::user())
                 ->update();
         }
     }
@@ -128,7 +130,7 @@ class ReadingTracking
         $rs = $sql
             ->from(self::table())
             ->where('post_id = ' . $post_id)
-            ->and('meta_type' . $sql->in([self::types()]))
+            ->and('meta_type' . $sql->in(self::types()))
             ->and('meta_id = ' . $sql->quote(self::user()))
             ->limit(1)
             ->select();
