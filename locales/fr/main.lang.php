@@ -1,7 +1,7 @@
 <?php
 // Language: Français
-// Module: ReadingTracking - 0.5.1
-// Date: 2025-05-13 16:26:41
+// Module: ReadingTracking - 0.7.1
+// Date: 2025-05-17 09:09:12
 // Author: , contact@jcdenis.fr
 // Translated with Translater - 2025.03.03
 
@@ -12,7 +12,7 @@
 
 use Dotclear\Helper\L10n;
 
-L10n::$locales['Add artifact on unread entries'] = 'Ajouter l\'artefact aux billets non lus';
+L10n::$locales['Add reading tracking icon on unread entries'] = 'Ajouter l\'icône de suivi de lecture sur les billets non lus';
 L10n::$locales['Reset a post reading tracking on new comment'] = 'Réinitialiser le suivi de lecture d\'un billet lors d\'un nouveau commentaire';
 L10n::$locales['Mark all entries as read'] = 'Marquer toutes les entrées comme lues';
 L10n::$locales['Reset reading tracking'] = 'Remettre à zéro le suivi de lecture';

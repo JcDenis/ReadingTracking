@@ -196,7 +196,7 @@ class FrontendBehaviors
                             ->items([
                                 (new Checkbox(My::id() . $action . '_active', !empty(My::prefs()->get('active'))))
                                     ->value('1')
-                                    ->label(new Label(__('Add artifact on unread entries'), Label::OL_FT)),
+                                    ->label(new Label(__('Add reading tracking icon on unread entries'), Label::OL_FT)),
                             ]),
                         (new Div())
                             ->class('inputfield')
