@@ -1,6 +1,6 @@
 # Language: Français
 # Module: ReadingTracking - 0.7.1
-# Date: 2025-05-17 09:09:12
+# Date: 2025-05-17 09:21:31
 # Author: , contact@jcdenis.fr
 # Translated with translater 2025.03.03
 
@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Project-Id-Version: ReadingTracking 0.7.1\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2025-05-17T09:09:12+00:00\n"
+"PO-Revision-Date: 2025-05-17T09:21:31+00:00\n"
 "Last-Translator: Jean-Christian Denis\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -58,6 +58,14 @@ msgstr "Laisser vide pour désactiver les notifications par email"
 #: src/FrontendBehaviors.php:123
 msgid "Unsubscribe"
 msgstr "Se désabonner"
+
+#: src/FrontendBehaviors.php:124
+msgid "No more recieve email when new comment is posted"
+msgstr "Ne plus recevoir d'email lorsqu'un nouveau commentaire est posté"
+
+#: src/FrontendBehaviors.php:124
+msgid "Receive an email when new comment is posted"
+msgstr "Recevoir un email lorsqu'un nouveau commentaire est posté"
 
 #: src/FrontendBehaviors.php:188
 msgid "Reading tracking"

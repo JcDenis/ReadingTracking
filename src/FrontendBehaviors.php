@@ -121,7 +121,7 @@ class FrontendBehaviors
                 ->class('post-reading-tracking')
                 ->fields([
                     (new Submit([My::id() . 'subscribe'], $check ? __('Unsubscribe') : __('Subscribe')))
-                        ->title('Receive an email when new comment is posted'),
+                        ->title($check ? __('No more recieve email when new comment is posted') : __('Receive an email when new comment is posted')),
                     (new Hidden([My::id() .'check'], App::nonce()->getNonce())),
                     (new Hidden([My::id() .'post'], (string) $post_id)),
                 ])

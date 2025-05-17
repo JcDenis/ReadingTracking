@@ -1,7 +1,7 @@
 <?php
 // Language: Français
 // Module: ReadingTracking - 0.7.1
-// Date: 2025-05-17 09:09:12
+// Date: 2025-05-17 09:21:31
 // Author: , contact@jcdenis.fr
 // Translated with Translater - 2025.03.03
 
@@ -22,6 +22,8 @@ L10n::$locales['This add artifact at the begining of unread posts titles. Or you
 L10n::$locales['Email sender for entries subscriptions:'] = 'Adresse email de l\'expéditeur des notifacitons :';
 L10n::$locales['Leave it empty to disable entries subscriptions.'] = 'Laisser vide pour désactiver les notifications par email';
 L10n::$locales['Unsubscribe'] = 'Se désabonner';
+L10n::$locales['No more recieve email when new comment is posted'] = 'Ne plus recevoir d\'email lorsqu\'un nouveau commentaire est posté';
+L10n::$locales['Receive an email when new comment is posted'] = 'Recevoir un email lorsqu\'un nouveau commentaire est posté';
 L10n::$locales['Reading tracking'] = 'Suivi de lecture';
 L10n::$locales['Remove email notifiaction from all entries'] = 'Retirer les notifications par email des tous les billets';
 L10n::$locales['Do not use artifact'] = 'Ne pas utiliser l\'artefact';
