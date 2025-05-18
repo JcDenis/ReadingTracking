@@ -223,7 +223,6 @@ class FrontendBehaviors
                             ->class('controlset')
                             ->items([
                                 (new Submit(My::id() . $action . 'save', __('Save')))
-                                    ->class('button'),
                                 (new Hidden(['FrontendSessionredir'], Http::getSelfURI())),
                                 (new Hidden(['FrontendSessioncheck'], App::nonce()->getNonce())),
                                 (new Hidden(['FrontendSessionaction'], $action)),
