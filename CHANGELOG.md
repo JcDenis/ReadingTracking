@@ -1,3 +1,9 @@
+ReadingTracking 0.8 - 2025.05.28
+==========================================================
+* Remove "button" class" from tempaltes
+* Fix translation
+* Fix some texts
+
 ReadingTracking 0.7 - 2025.05.14
 ==========================================================
 * Add install process
