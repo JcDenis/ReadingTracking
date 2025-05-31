@@ -450,9 +450,9 @@ class ReadingTracking
     }
 
     /**
-     * Send mail to a post mainling list on new post comments.
+     * Send mail to a post mailing list on new post comments.
      */
-    public static function mailSubscribers(int $post_id): void
+    public static function mailSubscribers(int $post_id, string $excluded_mail = ''): void
     {
         if (!My::settings()->get('email_from')) {
 
@@ -495,6 +495,9 @@ class ReadingTracking
         );
 
         foreach ($mails as $user => $mail) {
+            if ($mail == $excluded_mail) {
+                continue;
+            }
             Mail::sendMail($mail, $subject, str_replace('#$USER$#', $user, $message), $headers);
         }
     }

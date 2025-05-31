@@ -137,7 +137,7 @@ class FrontendBehaviors
     public static function publicAfterCommentCreate(Cursor $cur, int|string $comment_id): void
     {
         if (My::settings()->get('active') && !App::status()->comment()->isRestricted((int) $cur->getField('comment_status'))) {
-            ReadingTracking::mailSubscribers((int) $cur->getField('post_id'));
+            ReadingTracking::mailSubscribers((int) $cur->getField('post_id'), $cur->comment_email ?? '');
         }
     }
 
