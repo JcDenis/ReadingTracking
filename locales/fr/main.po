@@ -49,7 +49,7 @@ msgstr "Ajoute un artefact avant le titre d'un billet non lu. Sinon vous pouvez 
 
 #: src/BackendBehaviors.php:136
 msgid "Email sender for entries subscriptions:"
-msgstr "Adresse email de l'expéditeur des notifacitons :"
+msgstr "Adresse email de l'expéditeur des notifications :"
 
 #: src/BackendBehaviors.php:140
 msgid "Leave it empty to disable entries subscriptions."
