@@ -1,3 +1,8 @@
+ReadingTracking 0.9 - 2025.05.31
+==========================================================
+* Bump plugin FrontendSession from 0.24 to 0.27
+* Do not send mail to current user
+
 ReadingTracking 0.8 - 2025.05.28
 ==========================================================
 * Remove "button" class" from tempaltes
