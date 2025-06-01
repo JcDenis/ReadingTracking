@@ -7,10 +7,9 @@ namespace Dotclear\Plugin\ReadingTracking;
 use ArrayObject;
 use Dotclear\App;
 use Dotclear\Database\{ Cursor, MetaRecord };
-use Dotclear\Exception\PreconditionException;
-use Dotclear\Helper\Html\Form\{ Checkbox, Div, Form, Hidden, Label, Submit, Text };
+use Dotclear\Helper\Html\Form\{ Checkbox, Form, Hidden, Label, Submit };
 use Dotclear\Helper\Html\Html;
-use Dotclear\Helper\Network\Http;
+use Dotclear\Plugin\FrontendSession\FrontendSessionProfil;
 
 /**
  * @brief       ReadingTracking module frontend behaviors.
@@ -146,24 +145,24 @@ class FrontendBehaviors
      */
     public static function FrontendSessionAction(string $action): void
     {
-        if ($action == 'rtupd'
+        if ($action == My::id()
             && My::settings()->get('active')
             && App::auth()->check(My::id(), App::blog()->id())
         ) {
             $old_comment = (bool) My::prefs()->get('comment');
-            $new_comment = !empty($_POST[My::id() . $action . '_comment']);
+            $new_comment = !empty($_POST[My::id() . '_comment']);
 
             if ($old_comment !== $new_comment) {
                 ReadingTracking::switchReadType($new_comment);
             }
 
-            My::prefs()->put('comment', !empty($_POST[My::id() . $action . '_comment']), 'boolean');
-            My::prefs()->put('active', !empty($_POST[My::id() . $action . '_active']), 'boolean');
+            My::prefs()->put('comment', !empty($_POST[My::id() . '_comment']), 'boolean');
+            My::prefs()->put('active', !empty($_POST[My::id() . '_active']), 'boolean');
 
-            if (!empty($_POST[My::id() . $action . '_allread'])) {
+            if (!empty($_POST[My::id() . '_allread'])) {
                 ReadingTracking::markReadPosts();
             }
-            if (!empty($_POST[My::id() . $action . '_unsubscribe'])) {
+            if (!empty($_POST[My::id() . '_unsubscribe'])) {
                 ReadingTracking::resetSubscriber();
             }
 
@@ -177,59 +176,34 @@ class FrontendBehaviors
     /**
      * Add session page user settings form.
      */
-    public static function FrontendSessionPage(): void
+    public static function FrontendSessionProfil(FrontendSessionProfil $profil): void
     {
         if (My::settings()->get('active')
             && App::auth()->check(My::id(), App::blog()->id())
         ) {
-            $action = 'rtupd';
-            echo (new Div(My::id() . $action))
-            ->items([
-                (new Text('h3', __('Reading tracking'))),
-                (new Form(My::id() . $action . 'form'))
-                    ->class('session-form')
-                    ->action('')
-                    ->method('post')
-                    ->fields([
-                        (new Div())
-                            ->class('inputfield')
-                            ->items([
-                                (new Checkbox(My::id() . $action . '_active', !empty(My::prefs()->get('active'))))
-                                    ->value('1')
-                                    ->label(new Label(__('Add reading tracking icon on unread entries'), Label::OL_FT)),
-                            ]),
-                        (new Div())
-                            ->class('inputfield')
-                            ->items([
-                                (new Checkbox(My::id() . $action . '_comment', !empty(My::prefs()->get('comment'))))
-                                    ->value('1')
-                                    ->label(new Label(__('Reset a post reading tracking on new comment'), Label::OL_FT)),
-                            ]),
-                        (new Div())
-                            ->class('inputfield')
-                            ->items([
-                                (new Checkbox(My::id() . $action . '_allread', false))
-                                    ->value('1')
-                                    ->label(new Label(__('Mark all entries as read'), Label::OL_FT)),
-                            ]),
-                        (new Div())
-                            ->class('inputfield')
-                            ->items([
-                                (new Checkbox(My::id() . $action . '_unsubscribe', false))
-                                    ->value('1')
-                                    ->label(new Label(__('Remove email notifiaction from all entries'), Label::OL_FT)),
-                            ]),
-                        (new Div())
-                            ->class('controlset')
-                            ->items([
-                                (new Submit(My::id() . $action . 'save', __('Save'))),
-                                (new Hidden(['FrontendSessionredir'], Http::getSelfURI())),
-                                (new Hidden(['FrontendSessioncheck'], App::nonce()->getNonce())),
-                                (new Hidden(['FrontendSessionaction'], $action)),
-                            ]),
-                    ]),
-            ])
-            ->render();
+            $profil->addAction(My::id(), __('Reading tracking'), [
+                $profil->getInputfield([
+                    (new Checkbox(My::id() . '_active', !empty(My::prefs()->get('active'))))
+                        ->value('1')
+                        ->label(new Label(__('Add reading tracking icon on unread entries'), Label::OL_FT)),
+                ]),
+                $profil->getInputfield([
+                    (new Checkbox(My::id() . '_comment', !empty(My::prefs()->get('comment'))))
+                        ->value('1')
+                        ->label(new Label(__('Reset a post reading tracking on new comment'), Label::OL_FT)),
+                ]),
+                $profil->getInputfield([
+                    (new Checkbox(My::id() . '_allread', false))
+                        ->value('1')
+                        ->label(new Label(__('Mark all entries as read'), Label::OL_FT)),
+                ]),
+                $profil->getInputfield([
+                    (new Checkbox(My::id() . '_unsubscribe', false))
+                        ->value('1')
+                        ->label(new Label(__('Remove email notifiaction from all entries'), Label::OL_FT)),
+                ]),
+                $profil->getControlset(My::id(), __('Save')),
+            ]);
         }
     }
 

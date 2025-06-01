@@ -38,7 +38,7 @@ class Frontend extends Process
             'publicEntryAfterContent'      => FrontendBehaviors::publicEntryAfterContent(...),
             'publicAfterCommentCreate'     => FrontendBehaviors::publicAfterCommentCreate(...),
             'FrontendSessionAction'        => FrontendBehaviors::FrontendSessionAction(...),
-            'FrontendSessionPage'          => FrontendBehaviors::FrontendSessionPage(...),
+            'FrontendSessionProfil'        => FrontendBehaviors::FrontendSessionProfil(...),
         ]);
 
         return true;
