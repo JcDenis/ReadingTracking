@@ -1,3 +1,7 @@
+ReadingTracking 0.10 - 2025.06.02
+==========================================================
+* Bump plugin FrontendSession from 0.27 to 0.28
+
 ReadingTracking 0.9 - 2025.05.31
 ==========================================================
 * Bump plugin FrontendSession from 0.24 to 0.27
