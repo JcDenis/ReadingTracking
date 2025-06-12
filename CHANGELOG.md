@@ -1,3 +1,8 @@
+ReadingTracking 0.11 - 2025.06.12
+==========================================================
+* Bump plugin FrontendSession from 0.27 to 0.30
+* Use FrontendSession behaviors for post buttons and actions
+
 ReadingTracking 0.10 - 2025.06.02
 ==========================================================
 * Bump plugin FrontendSession from 0.27 to 0.28
