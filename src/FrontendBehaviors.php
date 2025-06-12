@@ -84,47 +84,42 @@ class FrontendBehaviors
     }
 
     /**
-     * Add subscribe button after post content.
+     * Add or remove post subscription.
      */
-    public static function publicEntryAfterContent(): void
+    public static function FrontendSessionPostAction(MetaRecord $post): void
     {
         if (My::settings()->get('active')
-            && App::auth()->userId() != ''
             && self::isURLType()
+            && $post->commentsActive()
+            && !empty($_POST[My::id() . 'subscribe'])
         ) {
-            $post_id = (int) App::frontend()->context()->posts->f('post_id');
-            $check   = ReadingTracking::isSubscriber($post_id);
+            $post_id = (int) $post->f('post_id');
 
-            if (!App::frontend()->context()->posts->commentsActive()) {
-
-                return;
+            if (!ReadingTracking::isSubscriber($post_id)) {
+                ReadingTracking::addSubscriber($post_id);
+            } else {
+                ReadingTracking::delSubscriber($post_id);
             }
+        }
+    }
 
-            if (!empty($_POST[My::id() . 'post']) 
-                && $post_id == (int) $_POST[My::id() . 'post']
-            ) {
-                ReadingTracking::checkForm();
+    /**
+     * Add subscribe button after post content.
+     * 
+     * @params ArrayObject<int, Submit>
+     */
+    public static function FrontendSessionPostForm(MetaRecord $post, ArrayObject $buttons): void
+    {
+        if (My::settings()->get('active')
+            && self::isURLType()
+            && $post->commentsActive()
+        ) {
+            $check = ReadingTracking::isSubscriber((int) $post->f('post_id'));
 
-                $check   = !$check;
-
-                if ($check) {
-                    ReadingTracking::addSubscriber($post_id);
-                } else {
-                    ReadingTracking::delSubscriber($post_id);
-                }
-            }
-
-            echo (new Form(My::id(). $post_id))
-                ->method('post')
-                ->action('#p' . $post_id)
-                ->class('post-reading-tracking')
-                ->fields([
-                    (new Submit([My::id() . 'subscribe'], $check ? __('Unsubscribe') : __('Subscribe')))
-                        ->title($check ? __('No more recieve email when new comment is posted') : __('Receive an email when new comment is posted')),
-                    (new Hidden([My::id() .'check'], App::nonce()->getNonce())),
-                    (new Hidden([My::id() .'post'], (string) $post_id)),
-                ])
-                ->render();
+            $buttons->append(
+                (new Submit([My::id() . 'subscribe'], $check ? __('Unsubscribe') : __('Subscribe')))
+                    ->title($check ? __('No more recieve email when new comment is posted') : __('Receive an email when new comment is posted'))
+            );
         }
     }
 

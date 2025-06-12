@@ -501,14 +501,4 @@ class ReadingTracking
             Mail::sendMail($mail, $subject, str_replace('#$USER$#', $user, $message), $headers);
         }
     }
-
-    /**
-     * Check nonce from POST requests.
-     */
-    public static function checkForm(): void
-    {
-        if (!App::nonce()->checkNonce($_POST[My::id() . 'check'] ?? '-')) {
-            throw new PreconditionException();
-        }
-    }
 }

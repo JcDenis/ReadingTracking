@@ -35,8 +35,9 @@ class Frontend extends Process
             'coreBlogAfterTriggerComments' => FrontendBehaviors::coreBlogAfterTriggerComments(...),
             'publicPostBeforeGetPosts'     => FrontendBehaviors::publicPostBeforeGetPosts(...),
             'publicHeadContent'            => FrontendBehaviors::publicHeadContent(...),
-            'publicEntryAfterContent'      => FrontendBehaviors::publicEntryAfterContent(...),
             'publicAfterCommentCreate'     => FrontendBehaviors::publicAfterCommentCreate(...),
+            'FrontendSessionPostForm'      => FrontendBehaviors::FrontendSessionPostForm(...),
+            'FrontendSessionPostAction'    => FrontendBehaviors::FrontendSessionPostAction(...),
             'FrontendSessionAction'        => FrontendBehaviors::FrontendSessionAction(...),
             'FrontendSessionProfil'        => FrontendBehaviors::FrontendSessionProfil(...),
         ]);
