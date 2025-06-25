@@ -1,3 +1,7 @@
+ReadingTracking 0.12 - 2025.06.26
+==========================================================
+* Standardize backend blocs
+
 ReadingTracking 0.11 - 2025.06.12
 ==========================================================
 * Bump plugin FrontendSession from 0.27 to 0.30
