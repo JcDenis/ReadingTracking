@@ -7,7 +7,7 @@ namespace Dotclear\Plugin\ReadingTracking;
 use Dotclear\App;
 use Dotclear\Core\Backend\Notices;
 use Dotclear\Database\{ Cursor, MetaRecord };
-use Dotclear\Helper\Html\Form\{ Checkbox, Div, Fieldset, Input, Label, Legend, Note, Para, Select, Text };
+use Dotclear\Helper\Html\Form\{ Checkbox, Div, Fieldset, Img, Input, Label, Legend, Note, Para, Select };
 use Dotclear\Helper\Html\Html;
 use Dotclear\Interface\Core\BlogSettingsInterface;
 
@@ -44,7 +44,7 @@ class BackendBehaviors
 
         echo (new Fieldset())
             ->id(My::id() . '_prefs')
-            ->legend(new Legend(My::name()))
+            ->legend(new Legend((new Img(My::icons()[0]))->class('icon-small')->render() . ' ' . My::name()))
             ->fields(self::formForm((string) App::auth()->userID()))->render();
     }
 
@@ -106,11 +106,9 @@ class BackendBehaviors
      */
     public static function adminBlogPreferencesFormV2(BlogSettingsInterface $blog_settings): void
     {
-        echo (new Div())
-            ->class('fieldset')
+        echo (new Fieldset(My::id() . '_params'))
+            ->legend(new Legend((new Img(My::icons()[0]))->class('icon-small')->render() . ' ' . My::name()))
             ->items([
-                (new Text('h4', My::name()))
-                    ->id(My::id() . '_params'),
                 (new Para())
                     ->items([
                         (new Checkbox(My::id() . 'active', (bool) $blog_settings->get(My::id())->get('active')))
