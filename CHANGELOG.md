@@ -1,3 +1,8 @@
+ReadingTracking 0.13 - 2025.09.09
+==========================================================
+* Bump Dotclear from 2.34 to 2.36
+* Use TraitProcess
+
 ReadingTracking 0.12 - 2025.06.26
 ==========================================================
 * Standardize backend blocs
