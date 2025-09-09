@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\ReadingTracking;
 
 use Dotclear\App;
-use Dotclear\Core\Frontend\Url;
-use Dotclear\Core\Frontend\Utility;
+use Dotclear\Core\Url;
 use Dotclear\Helper\Network\Http;
 
 /**
