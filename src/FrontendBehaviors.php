@@ -6,8 +6,13 @@ namespace Dotclear\Plugin\ReadingTracking;
 
 use ArrayObject;
 use Dotclear\App;
-use Dotclear\Database\{ Cursor, MetaRecord };
-use Dotclear\Helper\Html\Form\{ Checkbox, Form, Hidden, Label, Submit };
+use Dotclear\Database\Cursor;
+use Dotclear\Database\MetaRecord;
+use Dotclear\Helper\Html\Form\Checkbox;
+use Dotclear\Helper\Html\Form\Form;
+use Dotclear\Helper\Html\Form\Hidden;
+use Dotclear\Helper\Html\Form\Label;
+use Dotclear\Helper\Html\Form\Submit;
 use Dotclear\Helper\Html\Html;
 use Dotclear\Plugin\FrontendSession\FrontendSessionProfil;
 

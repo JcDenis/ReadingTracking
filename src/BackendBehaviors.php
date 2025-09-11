@@ -6,8 +6,18 @@ namespace Dotclear\Plugin\ReadingTracking;
 
 use Dotclear\App;
 use Dotclear\Core\Backend\Notices;
-use Dotclear\Database\{ Cursor, MetaRecord };
-use Dotclear\Helper\Html\Form\{ Checkbox, Div, Fieldset, Img, Input, Label, Legend, Note, Para, Select };
+use Dotclear\Database\Cursor;
+use Dotclear\Database\MetaRecord;
+use Dotclear\Helper\Html\Form\Checkbox;
+use Dotclear\Helper\Html\Form\Div;
+use Dotclear\Helper\Html\Form\Fieldset;
+use Dotclear\Helper\Html\Form\Img;
+use Dotclear\Helper\Html\Form\Input;
+use Dotclear\Helper\Html\Form\Label;
+use Dotclear\Helper\Html\Form\Legend;
+use Dotclear\Helper\Html\Form\Note;
+use Dotclear\Helper\Html\Form\Para;
+use Dotclear\Helper\Html\Form\Select;
 use Dotclear\Helper\Html\Html;
 use Dotclear\Interface\Core\BlogSettingsInterface;
 

@@ -31,40 +31,38 @@ class Install
         }
 
         try {
-            if (($s = My::settings()) !== null) {
-                $s->put(
-                    'active',
-                    false,
-                    'boolean',
-                    'Enable reading tracking',
-                    false,
-                    true
-                );
-                $s->put(
-                    'artifact',
-                    ReadingTracking::DEFAULT_ARTIFACT,
-                    'string',
-                    'Default post artifact',
-                    false,
-                    true
-                );
-                $s->put(
-                    'email_from',
-                    '',
-                    'string',
-                    'Email notification sender',
-                    false,
-                    true
-                );
-                $s->put(
-                    'url_types',
-                    'post,category,tag,search,archive',
-                    'string',
-                    'Public URL type supported',
-                    false,
-                    true
-                );
-            }
+            My::settings()->put(
+                'active',
+                false,
+                'boolean',
+                'Enable reading tracking',
+                false,
+                true
+            );
+            My::settings()->put(
+                'artifact',
+                ReadingTracking::DEFAULT_ARTIFACT,
+                'string',
+                'Default post artifact',
+                false,
+                true
+            );
+            My::settings()->put(
+                'email_from',
+                '',
+                'string',
+                'Email notification sender',
+                false,
+                true
+            );
+            My::settings()->put(
+                'url_types',
+                'post,category,tag,search,archive',
+                'string',
+                'Public URL type supported',
+                false,
+                true
+            );
 
             return true;
         } catch (Exception $e) {

@@ -6,9 +6,14 @@ namespace Dotclear\Plugin\ReadingTracking;
 
 use Dotclear\App;
 use Dotclear\Database\MetaRecord;
-use Dotclear\Database\Statement\{ DeleteStatement, InsertStatement, JoinStatement, SelectStatement, UpdateStatement };
+use Dotclear\Database\Statement\DeleteStatement;
+use Dotclear\Database\Statement\InsertStatement;
+use Dotclear\Database\Statement\JoinStatement;
+use Dotclear\Database\Statement\SelectStatement;
+use Dotclear\Database\Statement\UpdateStatement;
 use Dotclear\Exception\PreconditionException;
-use Dotclear\Helper\Html\Form\{ Img, Option };
+use Dotclear\Helper\Html\Form\Img;
+use Dotclear\Helper\Html\Form\Option;
 use Dotclear\Helper\Network\Http;
 use Dotclear\Helper\Network\Mail\Mail;
 
@@ -37,7 +42,7 @@ class ReadingTracking
      */
     protected static function table(): string
     {
-        return App::con()->prefix() . App::meta()::META_TABLE_NAME;
+        return App::db()->con()->prefix() . App::meta()::META_TABLE_NAME;
     }
 
     /**
@@ -178,7 +183,7 @@ class ReadingTracking
             ->join(
                 (new JoinStatement())
                     ->inner()
-                    ->from($sql->as(App::con()->prefix() . App::blog()::POST_TABLE_NAME, 'P'))
+                    ->from($sql->as(App::db()->con()->prefix() . App::blog()::POST_TABLE_NAME, 'P'))
                     ->on('P.post_id = M.post_id')
                     ->statement()
             )
@@ -267,7 +272,7 @@ class ReadingTracking
             ->and('post_id IN (' .
                 (new SelectStatement())
                     ->column('post_id')
-                    ->from($sql->as(App::con()->prefix() . App::blog()::POST_TABLE_NAME, 'P'))
+                    ->from($sql->as(App::db()->con()->prefix() . App::blog()::POST_TABLE_NAME, 'P'))
                     ->where('blog_id = ' . $sql->quote(App::blog()->id()))
                     ->statement() .
             ')')
@@ -423,14 +428,14 @@ class ReadingTracking
             ->join(
                 (new JoinStatement())
                     ->inner()
-                    ->from($sql->as(App::con()->prefix() . App::blog()::POST_TABLE_NAME, 'P'))
+                    ->from($sql->as(App::db()->con()->prefix() . App::blog()::POST_TABLE_NAME, 'P'))
                     ->on('P.post_id = M.post_id')
                     ->statement()
             )
             ->join(
                 (new JoinStatement())
                     ->inner()
-                    ->from($sql->as(App::con()->prefix() . App::auth()::USER_TABLE_NAME, 'U'))
+                    ->from($sql->as(App::db()->con()->prefix() . App::auth()::USER_TABLE_NAME, 'U'))
                     ->on('U.user_id = M.meta_id')
                     ->statement()
             )

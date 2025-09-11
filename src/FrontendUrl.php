@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\ReadingTracking;
 
 use Dotclear\App;
-use Dotclear\Core\Url;
 use Dotclear\Helper\Network\Http;
 
 /**
@@ -15,7 +14,7 @@ use Dotclear\Helper\Network\Http;
  * @author      Jean-Christian Paul Denis
  * @copyright   AGPL-3.0
  */
-class FrontendUrl extends Url
+class FrontendUrl
 {
     /**
      * Get artifact.
@@ -23,7 +22,7 @@ class FrontendUrl extends Url
     public static function artifactEndpoint(?string $args): void
     {
         if (is_null($args) || !is_numeric($args) || !My::settings()->get('active')) {
-            self::p404();
+            App::url()::p404();
         }
 
         $rs = App::blog()->getPosts(['post_id' => (int) $args]);
