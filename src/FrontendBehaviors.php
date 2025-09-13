@@ -111,7 +111,7 @@ class FrontendBehaviors
     /**
      * Add subscribe button after post content.
      * 
-     * @params ArrayObject<int, Submit>
+     * @param   ArrayObject<int, Submit>    $buttons
      */
     public static function FrontendSessionPostForm(MetaRecord $post, ArrayObject $buttons): void
     {
