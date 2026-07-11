@@ -221,6 +221,6 @@ class FrontendBehaviors
             self::$types = iterator_to_array($types);
         }
 
-        return in_array(App::url()->getType(), self::$types);
+        return App::url()->isType(self::$types);
     }
 }
