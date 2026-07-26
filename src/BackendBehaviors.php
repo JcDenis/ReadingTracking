@@ -35,15 +35,17 @@ class BackendBehaviors
      */
     public static function updateUser(Cursor $cur, string $user_id = ''): void
     {
-        if (!empty($_POST[My::id() . '_allread'])) {
-            ReadingTracking::markReadPosts($user_id);
-        } elseif (!empty($_POST[My::id() . '_reset'])) {
-            ReadingTracking::delReadPosts($user_id);
-        }
+        if ($user_id !== '') {
+            if (!empty($_POST[My::id() . '_allread'])) {
+                ReadingTracking::markReadPosts($user_id);
+            } elseif (!empty($_POST[My::id() . '_reset'])) {
+                ReadingTracking::delReadPosts($user_id);
+            }
 
-        $user_prefs = App::userPreferences()->createFromUser($user_id, My::id());
-        $user_prefs->get(My::id())->put('active', !empty($_POST[My::id() . '_active']), 'boolean');
-        $user_prefs->get(My::id())->put('comment', !empty($_POST[My::id() . '_comment']), 'boolean');
+            $user_prefs = App::userPreferences()->createFromUser($user_id, My::id());
+            $user_prefs->get(My::id())->put('active', !empty($_POST[My::id() . '_active']), 'boolean');
+            $user_prefs->get(My::id())->put('comment', !empty($_POST[My::id() . '_comment']), 'boolean');
+        }
     }
 
     /**
