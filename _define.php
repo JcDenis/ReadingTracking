@@ -14,6 +14,10 @@
  */
 declare(strict_types=1);
 
+if (!isset($this) || !is_object($this) || !method_exists($this, 'registerModule') || !isset($this->id) || !is_string($this->id)) {
+    return;
+}
+
 $this->registerModule(
     'Reading tracking',
     'Mark post as read for connected users.',
@@ -21,8 +25,8 @@ $this->registerModule(
     '0.13.1',
     [
         'requires'    => [
-            ['core', '2.36'],
-            ['FrontendSession', '0.30'],
+            ['core', '2.39'],
+            ['FrontendSession', '0.42'],
         ],
         'settings'    => [
             'blog' => '#params.' . $this->id . '_params',
