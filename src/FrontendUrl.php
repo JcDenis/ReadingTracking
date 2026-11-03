@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\ReadingTracking;
 
 use Dotclear\App;
-use Dotclear\Helper\Network\Http;
 
 /**
  * @brief       ReadingTracking module URL handler.
@@ -21,17 +20,17 @@ class FrontendUrl
      */
     public static function artifactEndpoint(?string $args): void
     {
-        if (is_null($args) || !is_numeric($args) || !My::settings()->get('active')) {
+        if (is_null($args) || !is_numeric($args) || !My::settings()->getBool('active')) {
             App::url()::p404();
         }
 
-        $rs = App::blog()->getPosts(['post_id' => (int) $args]);
+        $rs = App::blog()->getPosts(['post_id' => (int) $args, 'no_content' => true]);
 
-        Http::head(200);
-        header('Content-type: application/json');
+        // Do not use Http::head(200) here, it sends a bad header on some servers
+        header('Content-Type: application/json; charset=UTF-8');
         echo json_encode([
-            'ret' => $rs->isEmpty() ? '' : $rs->getArtifact(),
+            'ret' => $rs->isEmpty() ? '' : RecordExtendPost::getArtifact($rs),
         ]);
-        exit;
+        dotclear_exit();
     }
 }
