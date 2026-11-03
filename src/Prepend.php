@@ -29,6 +29,9 @@ class Prepend
             return false;
         }
 
+        // Add "Reading tracking" user permission
+        App::auth()->setPermissionType(My::id(), My::name());
+
         // Add URL to get artifact from js
         App::url()->register(
             My::id(),
