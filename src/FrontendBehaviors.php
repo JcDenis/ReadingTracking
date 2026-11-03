@@ -50,11 +50,8 @@ class FrontendBehaviors
      */
     public static function coreBlogAfterTriggerComments(array $comments, array $posts): void
     {
-        if (My::prefs()->get('comment')) {
-            foreach($posts as $post_id) {
-                ReadingTracking::delReadPost((int) $post_id);
-            }
-        }
+        // Mark posts as unread for users that reset reading tracking on new comment
+        ReadingTracking::delCommentsReadPosts($posts);
     }
 
     /**

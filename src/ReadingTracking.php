@@ -163,6 +163,29 @@ class ReadingTracking
     }
 
     /**
+     * Delete posts tracking of users that use tracking by comment.
+     *
+     * This is used to mark posts as unread on new comment.
+     *
+     * @param   array<int, int|string>  $posts  The posts IDs
+     */
+    public static function delCommentsReadPosts(array $posts): void
+    {
+        $posts = array_values(array_filter(array_map(fn (mixed $v): int => is_numeric($v) ? (int) $v : 0, $posts)));
+        if ($posts === []) {
+
+            return;
+        }
+
+        $sql = new DeleteStatement();
+        $sql
+            ->from(self::table())
+            ->where('post_id' . $sql->in($posts, 'int'))
+            ->and('meta_type = ' . $sql->quote(self::META_TRACK_COMMENT))
+            ->delete();
+    }
+
+    /**
      * Get read posts for current user.
      *
      * @return  array<int, int>
