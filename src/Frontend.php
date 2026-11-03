@@ -31,6 +31,7 @@ class Frontend
         }
 
         App::frontend()->template()->addBlock('ReadingTrackingIf', FrontendTemplate::ReadingTrackingIf(...));
+        App::frontend()->template()->addValue('ReadingTrackingArtifact', FrontendTemplate::ReadingTrackingArtifact(...));
 
         App::behavior()->addBehaviors([
             'coreBlogGetPosts'             => FrontendBehaviors::coreBlogGetPosts(...),
