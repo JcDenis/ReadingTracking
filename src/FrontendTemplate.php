@@ -36,7 +36,7 @@ class FrontendTemplate
         $if   = [];
         $sign = fn ($a): string => (bool) $a ? '' : '!';
 
-        $operator = isset($attr['operator']) ? App::frontend()->template()::getOperator($attr['operator']) : '&&';
+        $operator = isset($attr['operator']) && is_string($attr['operator']) ? App::frontend()->template()::getOperator($attr['operator']) : '&&';
 
         if (isset($attr['is_read'])) {
             $if[] = $sign($attr['is_read']) . "App::frontend()->context()->posts->isReadPost()";

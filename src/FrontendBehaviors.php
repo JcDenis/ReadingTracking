@@ -66,7 +66,7 @@ class FrontendBehaviors
     {
         $rs = App::blog()->getPosts($params);
         if (!$rs->isEmpty()) {
-            ReadingTracking::markReadPost((int) $rs->f('post_id'));
+            ReadingTracking::markReadPost($rs->intField('post_id'));
         }
     }
 
@@ -75,8 +75,8 @@ class FrontendBehaviors
      */
     public static function publicHeadContent(): string
     {
-        $tplset = App::themes()->moduleInfo(App::blog()->settings()->get('system')->get('theme'), 'tplset');
-        if (in_array($tplset, ['dotty', /*'mustek'*/])) {
+        $tplset = App::themes()->moduleInfo((string) App::blog()->settings()->get('system')->getStr('theme'), 'tplset');
+        if (is_string($tplset) && in_array($tplset, ['dotty', /*'mustek'*/], true)) {
             echo My::cssLoad('frontend-' . $tplset);
         }
 
@@ -93,12 +93,12 @@ class FrontendBehaviors
      */
     public static function FrontendSessionPostAction(MetaRecord $post): void
     {
-        if (My::settings()->get('active')
+        if (My::settings()->getBool('active')
             && self::isURLType()
             && $post->commentsActive()
             && !empty($_POST[My::id() . 'subscribe'])
         ) {
-            $post_id = (int) $post->f('post_id');
+            $post_id = $post->intField('post_id');
 
             if (!ReadingTracking::isSubscriber($post_id)) {
                 ReadingTracking::addSubscriber($post_id);
@@ -115,11 +115,11 @@ class FrontendBehaviors
      */
     public static function FrontendSessionPostForm(MetaRecord $post, ArrayObject $buttons): void
     {
-        if (My::settings()->get('active')
+        if (My::settings()->getBool('active')
             && self::isURLType()
             && $post->commentsActive()
         ) {
-            $check = ReadingTracking::isSubscriber((int) $post->f('post_id'));
+            $check = ReadingTracking::isSubscriber($post->intField('post_id'));
 
             $buttons->append(
                 (new Submit([My::id() . 'subscribe'], $check ? __('Unsubscribe') : __('Subscribe')))
@@ -135,8 +135,11 @@ class FrontendBehaviors
      */
     public static function publicAfterCommentCreate(Cursor $cur, int|string $comment_id): void
     {
-        if (My::settings()->get('active') && !App::status()->comment()->isRestricted((int) $cur->getField('comment_status'))) {
-            ReadingTracking::mailSubscribers((int) $cur->getField('post_id'), $cur->comment_email ?? '');
+        $status  = is_numeric($status = $cur->getField('comment_status')) ? (int) $status : 0;
+        $post_id = is_numeric($post_id = $cur->getField('post_id')) ? (int) $post_id : 0;
+        $email   = is_string($email = $cur->getField('comment_email')) ? $email : '';
+        if (My::settings()->getBool('active') && $post_id !== 0 && !App::status()->comment()->isRestricted($status)) {
+            ReadingTracking::mailSubscribers($post_id, $email);
         }
     }
 
@@ -145,11 +148,11 @@ class FrontendBehaviors
      */
     public static function FrontendSessionAction(string $action): void
     {
-        if ($action == My::id()
-            && My::settings()->get('active')
+        if ($action === My::id()
+            && My::settings()->getBool('active')
             && App::auth()->check(My::id(), App::blog()->id())
         ) {
-            $old_comment = (bool) My::prefs()->get('comment');
+            $old_comment = (bool) My::prefs()->getBool('comment');
             $new_comment = !empty($_POST[My::id() . '_comment']);
 
             if ($old_comment !== $new_comment) {
@@ -169,7 +172,9 @@ class FrontendBehaviors
             // need to reload user to update form values
             App::auth()->checkUser((string) App::auth()->userID());
 
-            App::frontend()->context()->frontend_session->success = __('Profil successfully updated.');
+            if (App::frontend()->context()->frontend_session instanceof \Dotclear\Plugin\FrontendSession\FrontendSession) {
+                App::frontend()->context()->frontend_session->success = __('Profil successfully updated.');
+            }
         }
     }
 
@@ -178,17 +183,17 @@ class FrontendBehaviors
      */
     public static function FrontendSessionProfil(FrontendSessionProfil $profil): void
     {
-        if (My::settings()->get('active')
+        if (My::settings()->getBool('active')
             && App::auth()->check(My::id(), App::blog()->id())
         ) {
             $profil->addAction(My::id(), __('Reading tracking'), [
                 $profil->getInputfield([
-                    (new Checkbox(My::id() . '_active', !empty(My::prefs()->get('active'))))
+                    (new Checkbox(My::id() . '_active', (bool) My::prefs()->getBool('active')))
                         ->value('1')
                         ->label(new Label(__('Add reading tracking icon on unread entries'), Label::OL_FT)),
                 ]),
                 $profil->getInputfield([
-                    (new Checkbox(My::id() . '_comment', !empty(My::prefs()->get('comment'))))
+                    (new Checkbox(My::id() . '_comment', (bool) My::prefs()->getBool('comment')))
                         ->value('1')
                         ->label(new Label(__('Reset a post reading tracking on new comment'), Label::OL_FT)),
                 ]),
@@ -213,7 +218,7 @@ class FrontendBehaviors
             /**
              * @var     ArrayObject<int, string>    $types
              */
-            $types = new ArrayObject(explode(',', My::settings()->get('url_types')));
+            $types = new ArrayObject(explode(',', (string) My::settings()->getStr('url_types')));
 
             # --BEHAVIOR-- ReadingTrackingUrlTypes -- ArrayObject
             App::behavior()->callBehavior('ReadingTrackingUrlTypes', $types);

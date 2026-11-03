@@ -21,7 +21,7 @@ class RecordExtendPost
      */
     public static function isReadPost(MetaRecord $rs): bool
     {
-        return ReadingTracking::isReadPost((int) $rs->f('post_id'));
+        return ReadingTracking::isReadPost($rs->intField('post_id'));
     }
 
     /**
@@ -29,6 +29,6 @@ class RecordExtendPost
      */
     public static function getArtifact(MetaRecord $rs): string
     {
-        return !ReadingTracking::isReadPost((int) $rs->f('post_id')) && ReadingTracking::useArtifact() ? ReadingTracking::getArtifact() : ''; 
+        return !ReadingTracking::isReadPost($rs->intField('post_id')) && ReadingTracking::useArtifact() ? ReadingTracking::getArtifact() : '';
     }
 }

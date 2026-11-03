@@ -11,8 +11,6 @@ use Dotclear\Database\Statement\InsertStatement;
 use Dotclear\Database\Statement\JoinStatement;
 use Dotclear\Database\Statement\SelectStatement;
 use Dotclear\Database\Statement\UpdateStatement;
-use Dotclear\Exception\PreconditionException;
-use Dotclear\Helper\Html\Form\Img;
 use Dotclear\Helper\Html\Form\Option;
 use Dotclear\Helper\Network\Http;
 use Dotclear\Helper\Network\Mail\Mail;
@@ -52,7 +50,7 @@ class ReadingTracking
     {
         // check once
         if (is_null(self::$user)) {
-            self::$user = My::settings()->get('active') && App::auth()->check(My::id(), App::blog()->id()) ? (string) (string) App::auth()->userID() : '';
+            self::$user = My::settings()->getBool('active') && App::auth()->check(My::id(), App::blog()->id()) ? (string) App::auth()->userID() : '';
         }
 
         return self::$user;
@@ -63,7 +61,7 @@ class ReadingTracking
      */
     public static function type(): string
     {
-        return My::prefs()->get('comment') ? self::META_TRACK_COMMENT : self::META_TRACK_POST;
+        return My::prefs()->getBool('comment') ? self::META_TRACK_COMMENT : self::META_TRACK_POST;
     }
 
     /**
@@ -194,8 +192,8 @@ class ReadingTracking
 
         $res = [];
         if (!is_null($rs)) {
-            while($rs->fetch()) {
-                $res[] = (int) $rs->f('post_id');
+            while ($rs->fetch()) {
+                $res[] = $rs->intField('post_id');
             }
         }
 
@@ -284,7 +282,7 @@ class ReadingTracking
      */
     public static function useArtifact(): bool
     {
-        return My::settings()->get('active') && My::settings()->get('artifact') != '' && My::prefs()->get('active');
+        return My::settings()->getBool('active') && My::settings()->getStr('artifact') !== '' && My::prefs()->getBool('active');
     }
 
     /**
@@ -292,7 +290,9 @@ class ReadingTracking
      */
     public static function getArtifact(): string
     {
-        return My::settings()->get('artifact') ?: self::DEFAULT_ARTIFACT;
+        $artifact = (string) My::settings()->getStr('artifact');
+
+        return $artifact !== '' ? $artifact : self::DEFAULT_ARTIFACT;
     }
 
     /**
@@ -303,7 +303,7 @@ class ReadingTracking
     public static function getArtifacts(): array
     {
         return array_unique([
-            My::settings()->get('artifact') ?: self::DEFAULT_ARTIFACT,
+            self::getArtifact(),
             self::DEFAULT_ARTIFACT,
             "\u{23F5}",
             "\u{23F0}",
@@ -446,8 +446,8 @@ class ReadingTracking
 
         $res = [];
         if (!is_null($rs)) {
-            while($rs->fetch()) {
-                $res[(string) $rs->f('user_id')] = (string) $rs->f('user_email');
+            while ($rs->fetch()) {
+                $res[$rs->strField('user_id')] = $rs->strField('user_email');
             }
         }
 
@@ -459,7 +459,8 @@ class ReadingTracking
      */
     public static function mailSubscribers(int $post_id, string $excluded_mail = ''): void
     {
-        if (!My::settings()->get('email_from')) {
+        $email_from = (string) My::settings()->getStr('email_from');
+        if ($email_from === '') {
 
             return;
         }
@@ -476,7 +477,7 @@ class ReadingTracking
         }
 
         $headers = [
-            'From: ' . sprintf('%s <%s>', Mail::B64Header(App::blog()->name()), My::settings()->get('email_from')),
+            'From: ' . sprintf('%s <%s>', Mail::B64Header(App::blog()->name()), $email_from),
             'MIME-Version: 1.0',
             'Content-Type: text/plain; charset=UTF-8;',
             'Content-Transfer-Encoding: 8bit',
@@ -492,7 +493,7 @@ class ReadingTracking
         $message = wordwrap(
             __('You receive this email as you have subscribed to new comments on an entry.') . "\n\n" .
             __('Site:') . ' ' . App::blog()->name() . ' - ' . App::blog()->url() . "\n" .
-            __('Entry:') . ' ' . $rs->f('post_title') . "\n" .
+            __('Entry:') . ' ' . $rs->strField('post_title') . "\n" .
             __('URL:') . ' ' . $rs->getURL() . "\n\n" .
             __('Follow this link to see new comment or to unsubscribe to this entry.') . "\n" .
             sprintf(__('Thank you %s for your interest on our blog.'), '#$USER$#') . "\n",
@@ -500,7 +501,7 @@ class ReadingTracking
         );
 
         foreach ($mails as $user => $mail) {
-            if ($mail == $excluded_mail) {
+            if ($mail === $excluded_mail) {
                 continue;
             }
             Mail::sendMail($mail, $subject, str_replace('#$USER$#', $user, $message), $headers);

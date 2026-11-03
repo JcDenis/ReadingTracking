@@ -67,7 +67,7 @@ class BackendBehaviors
     {
         echo (new Div())
             ->class('fieldset')
-            ->items(self::formForm(is_null($rs) || $rs->isEmpty() ? '' : $rs->user_id))
+            ->items(self::formForm(is_null($rs) || $rs->isEmpty() ? '' : $rs->strField('user_id')))
             ->render();
     }
 
@@ -81,8 +81,8 @@ class BackendBehaviors
         $active = $comment = false;
         if (!empty($user_id)) {
             $prefs  = App::userPreferences()->createFromUser($user_id, My::id());
-            $active  = (bool) $prefs->get(My::id())->get('active');
-            $comment = (bool) $prefs->get(My::id())->get('comment');
+            $active  = (bool) $prefs->get(My::id())->getBool('active');
+            $comment = (bool) $prefs->get(My::id())->getBool('comment');
         }
 
         return [
@@ -123,7 +123,7 @@ class BackendBehaviors
             ->items([
                 (new Para())
                     ->items([
-                        (new Checkbox(My::id() . 'active', (bool) $blog_settings->get(My::id())->get('active')))
+                        (new Checkbox(My::id() . 'active', (bool) $blog_settings->get(My::id())->getBool('active')))
                             ->value(1)
                             ->label(new Label(__('Enable user reading tracking'), Label::IL_FT)),
                     ]),
@@ -131,7 +131,7 @@ class BackendBehaviors
                     ->items([
                         (new Select(My::id() . 'artifact'))
                             ->items(ReadingTracking::getArtifactsCombo())
-                            ->default((string) $blog_settings->get(My::id())->get('artifact'))
+                            ->default((string) $blog_settings->get(My::id())->getStr('artifact'))
                             ->label((new Label(__('Artifact to use:'), Label::OL_TF))),
                     ]),
                 (new Note())
@@ -142,7 +142,7 @@ class BackendBehaviors
                         (new Input(My::id() . 'email_from'))
                             ->size(65)
                             ->maxlength(255)
-                            ->value($blog_settings->get(My::id())->get('email_from'))
+                            ->value((string) $blog_settings->get(My::id())->getStr('email_from'))
                             ->label(new Label(__('Email sender for entries subscriptions:'), Label::OL_TF)),
                     ]),
                 (new Note())
@@ -157,11 +157,13 @@ class BackendBehaviors
      */
     public static function adminBeforeBlogSettingsUpdate(BlogSettingsInterface $blog_settings): void
     {
-        $change = $blog_settings->get(My::id())->get('artifact') !== $_POST[My::id() . 'artifact'];
+        $artifact   = isset($_POST[My::id() . 'artifact'])   && is_string($_POST[My::id() . 'artifact']) ? $_POST[My::id() . 'artifact'] : '';
+        $email_from = isset($_POST[My::id() . 'email_from']) && is_string($_POST[My::id() . 'email_from']) ? $_POST[My::id() . 'email_from'] : '';
+        $change     = $blog_settings->get(My::id())->getStr('artifact') !== $artifact;
 
         $blog_settings->get(My::id())->put('active', !empty($_POST[My::id() . 'active']), 'boolean');
-        $blog_settings->get(My::id())->put('artifact', (string) $_POST[My::id() . 'artifact'], 'string');
-        $blog_settings->get(My::id())->put('email_from', (string) $_POST[My::id() . 'email_from'], 'string');
+        $blog_settings->get(My::id())->put('artifact', $artifact, 'string');
+        $blog_settings->get(My::id())->put('email_from', $email_from, 'string');
 
         // Need to clean template EntryTitle
         if ($change) {
