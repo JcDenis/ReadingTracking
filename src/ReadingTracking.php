@@ -205,31 +205,32 @@ class ReadingTracking
      */
     public static function markReadPosts(string $user_id = ''): void
     {
-        self::delReadPosts($user_id);
-
         if ($user_id === '' && self::user() === ''
             || $user_id !== '' && !App::auth()->isSuperAdmin()
         ) {
 
             return;
         }
+
+        // Remove all posts tracking of the user before marking all posts as read
+        self::delReadPosts($user_id);
+
+        // Use type of tracking of the given user
+        $type = self::type();
+        if ($user_id !== '' && $user_id !== self::user()) {
+            $type = App::userPreferences()->createFromUser($user_id, My::id())->get(My::id())->getBool('comment') ? self::META_TRACK_COMMENT : self::META_TRACK_POST;
+        }
         if ($user_id === '') {
             $user_id = self::user();
         }
 
-        self::delReadPosts($user_id);
-
         $values = [];
-        $reads  = self::getReadPosts();
         $posts  = App::blog()->getPosts(['no_content' => true]);
-        while($posts->fetch()) {
-            if (in_array((int) $posts->f('post_id'), $reads)) {
-                continue;
-            }
+        while ($posts->fetch()) {
             $values[] = [
                 $user_id,
-                self::type(),
-                (int) $posts->f('post_id'),
+                $type,
+                $posts->intField('post_id'),
             ];
         }
 
