@@ -1,3 +1,13 @@
+ReadingTracking 0.14 - 2026.11.05
+===========================================================
+* Bump Dotclear from 2.36 to 2.39 and FrontendSession from 0.30 to 0.42
+* Code review (phpstan max)
+* Fix artifact endpoint (empty response)
+* Fix mark all entries as read for another user
+* Fix reset of posts reading tracking on new comment
+* Add user permission for reading tracking
+* Fix missing template value ReadingTrackingArtifact
+
 ReadingTracking 0.13 - 2025.09.09
 ==========================================================
 * Bump Dotclear from 2.34 to 2.36
