@@ -8,7 +8,7 @@
     <desc>Mark post as read for connected users.</desc>
     <file>https://github.com/JcDenis/ReadingTracking/releases/download/v0.14/plugin-ReadingTracking.zip</file>
     <da:dcmin>2.39</da:dcmin>
-    <da:details>https://github.com/JcDenis/ReadingTracking/src/branch/master/README.md</da:details>
+    <da:details>https://github.com/JcDenis/ReadingTracking/blob/master/README.md</da:details>
     <da:support>https://github.com/JcDenis/ReadingTracking/issues</da:support>
   </module>
 </modules>
