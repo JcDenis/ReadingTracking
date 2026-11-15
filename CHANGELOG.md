@@ -1,3 +1,7 @@
+ReadingTracking 0.15.1 - 2026.11.15
+===========================================================
+* [lang] Do not override core translations
+
 ReadingTracking 0.15 - 2026.11.15
 ===========================================================
 * [fix] Unread icon added server side, also on home page; subscribe button only on entry page; resetSubscriber uses its parameter
