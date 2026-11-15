@@ -12,6 +12,8 @@ _ReadingTracking_ is a plugin for the open-source web publishing software called
 
 > Mark post as read for connected users..
 
+A [user guide in French](https://github.com/JcDenis/ReadingTracking/blob/master/docs/fr/utilisation.md) is available.
+
 ## REQUIREMENTS
 
 * Dotclear 2.39
@@ -30,6 +32,7 @@ Dotclear plugins repository. (See Dotclear's documentation to know how do this)
 
 ## LINKS
 
+* [User guide (in French)](https://github.com/JcDenis/ReadingTracking/blob/master/docs/fr/utilisation.md)
 * [License](https://github.com/JcDenis/ReadingTracking/blob/master/LICENSE)
 * [Packages & details](https://github.com/JcDenis/ReadingTracking/releases) (or on [Repository](https://dotclear.org/plugin/detail/ReadingTracking))
 * [Sources & contributions](https://github.com/JcDenis/ReadingTracking)
