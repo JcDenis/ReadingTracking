@@ -57,12 +57,17 @@ class Install
             );
             My::settings()->put(
                 'url_types',
-                'post,category,tag,search,archive',
+                'default,post,category,tag,search,archive',
                 'string',
                 'Public URL type supported',
                 false,
                 true
             );
+
+            // Add home page to old default URL types
+            if (My::settings()->getStr('url_types') === 'post,category,tag,search,archive') {
+                My::settings()->put('url_types', 'default,post,category,tag,search,archive', 'string', 'Public URL type supported', true, true);
+            }
 
             return true;
         } catch (Exception $e) {

@@ -68,7 +68,7 @@ class FrontendBehaviors
     }
 
     /**
-     * Add JS for tracking to page headers.
+     * Add CSS to page headers.
      */
     public static function publicHeadContent(): string
     {
@@ -77,12 +77,45 @@ class FrontendBehaviors
             echo My::cssLoad('frontend-' . $tplset);
         }
 
-        if (self::isURLType() && ReadingTracking::useArtifact()) {
-            echo My::jsLoad('frontend') .
-            Html::jsJson(My::id(), ['url' => App::blog()->url() . App::url()->getBase(My::id()) . '/']);
+        return '';
+    }
+
+    /**
+     * Add artifact to titles of unread entries.
+     *
+     * Entries are found by their HTML article "pID" and their title by class "post-title".
+     *
+     * @param   ArrayObject<string, mixed>  $result     The document
+     */
+    public static function urlHandlerServeDocument(ArrayObject $result): void
+    {
+        if (!is_string($result['content'])
+            || !is_string($result['content_type']) || !str_contains($result['content_type'], 'html')
+            || !self::isURLType()
+            || !ReadingTracking::useArtifact()
+        ) {
+            return;
         }
 
-        return '';
+        $read     = ReadingTracking::getReadPosts();
+        $artifact = '<span class="reading-tracking-artifact">' . Html::escapeHTML(ReadingTracking::getArtifact()) . '</span> ';
+
+        $result['content'] = preg_replace_callback(
+            '#(<article\b[^>]*\bid="p(\d+)"[^>]*>)(.*?)(</article>)#s',
+            function (array $m) use ($read, $artifact): string {
+                if (in_array((int) $m[2], $read, true)) {
+                    return $m[0];
+                }
+
+                return $m[1] . (string) preg_replace(
+                    '#(<(h\d)\b[^>]*\bclass="[^"]*\bpost-title\b[^"]*"[^>]*>)#',
+                    '$1' . str_replace(['\\', '$'], ['\\\\', '\\$'], $artifact),
+                    $m[3],
+                    1
+                ) . $m[4];
+            },
+            $result['content']
+        ) ?? $result['content'];
     }
 
     /**
@@ -91,7 +124,7 @@ class FrontendBehaviors
     public static function FrontendSessionPostAction(MetaRecord $post): void
     {
         if (My::settings()->getBool('active')
-            && self::isURLType()
+            && App::url()->isType('post')
             && $post->commentsActive()
             && !empty($_POST[My::id() . 'subscribe'])
         ) {
@@ -113,14 +146,14 @@ class FrontendBehaviors
     public static function FrontendSessionPostForm(MetaRecord $post, ArrayObject $buttons): void
     {
         if (My::settings()->getBool('active')
-            && self::isURLType()
+            && App::url()->isType('post')
             && $post->commentsActive()
         ) {
             $check = ReadingTracking::isSubscriber($post->intField('post_id'));
 
             $buttons->append(
                 (new Submit([My::id() . 'subscribe'], $check ? __('Unsubscribe') : __('Subscribe')))
-                    ->title($check ? __('No more recieve email when new comment is posted') : __('Receive an email when new comment is posted'))
+                    ->title($check ? __('No more receive email when new comment is posted') : __('Receive an email when new comment is posted'))
             );
         }
     }
@@ -170,7 +203,7 @@ class FrontendBehaviors
             App::auth()->checkUser((string) App::auth()->userID());
 
             if (App::frontend()->context()->frontend_session instanceof \Dotclear\Plugin\FrontendSession\FrontendSession) {
-                App::frontend()->context()->frontend_session->success = __('Profil successfully updated.');
+                App::frontend()->context()->frontend_session->success = __('Profile successfully updated.');
             }
         }
     }
@@ -202,7 +235,7 @@ class FrontendBehaviors
                 $profil->getInputfield([
                     (new Checkbox(My::id() . '_unsubscribe', false))
                         ->value('1')
-                        ->label(new Label(__('Remove email notifiaction from all entries'), Label::OL_FT)),
+                        ->label(new Label(__('Remove email notification from all entries'), Label::OL_FT)),
                 ]),
                 $profil->getControlset(My::id(), __('Save')),
             ]);

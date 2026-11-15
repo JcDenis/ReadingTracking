@@ -425,7 +425,9 @@ class ReadingTracking
      */
     public static function resetSubscriber(string $user_id = ''): void
     {
-        if (self::user() === '') {
+        if ($user_id === '' && self::user() === ''
+            || $user_id !== '' && $user_id !== self::user() && !App::auth()->isSuperAdmin()
+        ) {
 
             return;
         }
@@ -434,7 +436,7 @@ class ReadingTracking
         $sql
             ->from(self::table())
             ->where('meta_type = ' . $sql->quote(self::META_MAILING))
-            ->and('meta_id = ' . $sql->quote(self::user()))
+            ->and('meta_id = ' . $sql->quote($user_id !== '' ? $user_id : self::user()))
             ->delete();
     }
 

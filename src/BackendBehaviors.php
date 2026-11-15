@@ -136,7 +136,7 @@ class BackendBehaviors
                     ]),
                 (new Note())
                     ->class('form-note')
-                    ->text(__('This add artifact at the begining of unread posts titles. Or you can use custom templates instead.')),
+                    ->text(__('This add artifact at the beginning of unread posts titles. Or you can use custom templates instead.')),
                 (new Para())
                     ->items([
                         (new Input(My::id() . 'email_from'))

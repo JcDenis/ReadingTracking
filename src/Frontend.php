@@ -38,6 +38,7 @@ class Frontend
             'coreBlogAfterTriggerComments' => FrontendBehaviors::coreBlogAfterTriggerComments(...),
             'publicPostBeforeGetPosts'     => FrontendBehaviors::publicPostBeforeGetPosts(...),
             'publicHeadContent'            => FrontendBehaviors::publicHeadContent(...),
+            'urlHandlerServeDocument'      => FrontendBehaviors::urlHandlerServeDocument(...),
             'publicAfterCommentCreate'     => FrontendBehaviors::publicAfterCommentCreate(...),
             'FrontendSessionPostForm'      => FrontendBehaviors::FrontendSessionPostForm(...),
             'FrontendSessionPostAction'    => FrontendBehaviors::FrontendSessionPostAction(...),
