@@ -2,11 +2,11 @@
 <modules xmlns:da="http://dotaddict.org/da/">
   <module id="ReadingTracking">
     <name>Reading tracking</name>
-    <version>0.14</version>
-    <date>2026-11-04T23:34:41+00:00</date>
+    <version>0.15</version>
+    <date>2026-11-15T13:57:03+00:00</date>
     <author>Jean-Christian Paul Denis and contributors</author>
     <desc>Mark post as read for connected users.</desc>
-    <file>https://github.com/JcDenis/ReadingTracking/releases/download/v0.14/plugin-ReadingTracking.zip</file>
+    <file>https://github.com/JcDenis/ReadingTracking/releases/download/v0.15/plugin-ReadingTracking.zip</file>
     <da:dcmin>2.39</da:dcmin>
     <da:details>https://github.com/JcDenis/ReadingTracking/blob/master/README.md</da:details>
     <da:support>https://github.com/JcDenis/ReadingTracking/issues</da:support>
