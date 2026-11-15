@@ -1,7 +1,5 @@
 ReadingTracking 0.15 - 2026.11.15
 ===========================================================
-* Fix DA URLs
-* Add Claude to contributors
 * [fix] Unread icon added server side, also on home page; subscribe button only on entry page; resetSubscriber uses its parameter
 * [lang] Missing translations, typos and consistent French labels
 * [docs] Add a user guide in French, with screenshots
