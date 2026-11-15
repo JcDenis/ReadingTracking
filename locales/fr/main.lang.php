@@ -36,4 +36,4 @@ L10n::$locales['Subscribe'] = 'S\'abonner';
 L10n::$locales['Save'] = 'Enregistrer';
 L10n::$locales['Profile successfully updated.'] = 'Profil mis à jour avec succès.';
 L10n::$locales['Site:'] = 'Site :';
-L10n::$locales['URL:'] = 'URL :';
+L10n::$locales['URL:'] = 'URL :';
