@@ -20,7 +20,7 @@ Le plugin a besoin du plugin FrontendSession : seuls les comptes qui peuvent se 
 1. Allez dans « Paramètres du blog ».
 2. Ouvrez « Paramètres des plugins pour ce blog ».
 3. Dans la section « Suivi de lecture », cochez « Activer le suivi de lecture pour les utilisateurs ».
-4. Choisissez l'« Artefact à utiliser », c'est-à-dire le symbole placé devant le titre des billets non lus. Le choix « Ne pas utiliser l'artefact » supprime le symbole.
+4. Choisissez l'« Icône à utiliser », c'est-à-dire le symbole placé devant le titre des billets non lus. Le choix « Ne pas utiliser d'icône » supprime le symbole.
 5. Si vous voulez les notifications par e-mail, saisissez l'adresse d'expéditeur. Laissez le champ vide pour les désactiver.
 6. Enregistrez.
 
@@ -36,12 +36,12 @@ Une fois connectée, une personne ouvre la page « Mon compte » du blog. La sec
 
 * « Ajouter l'icône de suivi de lecture sur les billets non lus » : sans cette case, rien n'est affiché.
 * « Réinitialiser le suivi de lecture d'un billet lors d'un nouveau commentaire » : un billet déjà lu redevient non lu quand il reçoit un commentaire.
-* « Marquer toutes les entrées comme lues ».
-* « Retirer les notifications par email des tous les billets ».
+* « Marquer tous les billets comme lus ».
+* « Retirer les notifications par e-mail de tous les billets ».
 
 ![Section « Suivi de lecture » de la page « Mon compte »](img/compte-suivi.png)
 
-Cliquez sur « Save » pour enregistrer. Le blog confirme avec « Profil successfully updated. ».
+Cliquez sur « Enregistrer ». Le blog confirme avec « Profil mis à jour avec succès. ».
 
 Quand vous changez la case des commentaires, les billets déjà lus sont conservés et suivent le nouveau mode.
 
@@ -51,18 +51,19 @@ Un billet est marqué comme lu quand la personne connectée ouvre sa page.
 
 L'icône apparaît devant le titre des billets non lus dans ces pages :
 
+* la page d'accueil ;
 * les catégories ;
 * les mots-clés ;
 * les archives ;
 * les résultats de recherche.
 
-![Page d'une catégorie : l'icône marque les billets non lus](img/categorie-non-lus.png)
+![Page d'accueil : l'icône marque les billets non lus](img/accueil-non-lus.png)
 
 Les billets déjà lus n'ont pas d'icône.
 
 ## Être prévenu des nouveaux commentaires
 
-Sous un billet qui accepte les commentaires, une personne connectée voit le bouton « S'abonner ». Un clic l'abonne au billet, et le bouton devient « Se désabonner ».
+Sur la page d'un billet qui accepte les commentaires, une personne connectée voit le bouton « S'abonner ». Un clic l'abonne au billet, et le bouton devient « Se désabonner ».
 
 ![Bouton d'abonnement sous un billet](img/bouton-abonner.png)
 
@@ -74,7 +75,7 @@ Quand un nouveau commentaire publié arrive, chaque abonné reçoit un e-mail av
 
 La personne qui a posté le commentaire ne reçoit pas l'e-mail.
 
-Pour se désabonner de tous les billets d'un coup, cochez « Retirer les notifications par email des tous les billets » dans « Mon compte ».
+Pour se désabonner de tous les billets d'un coup, cochez « Retirer les notifications par e-mail de tous les billets » dans « Mon compte ».
 
 ## Les réglages dans l'administration
 
@@ -94,7 +95,6 @@ Si votre thème est personnalisé, vous pouvez placer le symbole vous-même, ave
 
 ## Bon à savoir
 
-* L'icône n'apparaît pas sur la page d'accueil du blog, seulement sur les pages listées plus haut.
-* Le bouton « S'abonner » est aussi affiché sous chaque billet dans les listes (catégories, archives).
+* Le bouton « S'abonner » n'apparaît que sur la page d'un billet, pas dans les listes.
 * Les e-mails ne partent que pour les commentaires créés et publiés directement depuis le blog.
-* Une partie du texte vient du plugin FrontendSession : le bouton « Save » et le message « Profil successfully updated. » restent en anglais.
+* L'icône est ajoutée par le serveur au titre des billets : votre thème doit utiliser la classe `post-title` sur le titre de chaque billet (c'est le cas des thèmes livrés avec Dotclear). Sinon, utilisez les balises de la section précédente.
