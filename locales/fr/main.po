@@ -29,7 +29,7 @@ msgstr "Réinitialiser le suivi de lecture d'un billet lors d'un nouveau comment
 #: src/BackendBehaviors.php:93
 #: src/FrontendBehaviors.php:213
 msgid "Mark all entries as read"
-msgstr "Marquer toutes les entrées comme lues"
+msgstr "Marquer tous les billets comme lus"
 
 #: src/BackendBehaviors.php:99
 msgid "Reset reading tracking"
@@ -41,43 +41,43 @@ msgstr "Activer le suivi de lecture pour les utilisateurs"
 
 #: src/BackendBehaviors.php:125
 msgid "Artifact to use:"
-msgstr "Artefact à utiliser :"
+msgstr "Icône à utiliser :"
 
 #: src/BackendBehaviors.php:129
-msgid "This add artifact at the begining of unread posts titles. Or you can use custom templates instead."
-msgstr "Ajoute un artefact avant le titre d'un billet non lu. Sinon vous pouvez utiliser les balises de templates."
+msgid "This add artifact at the beginning of unread posts titles. Or you can use custom templates instead."
+msgstr "Ajoute une icône avant le titre des billets non lus. Vous pouvez aussi utiliser les balises de modèles."
 
 #: src/BackendBehaviors.php:136
 msgid "Email sender for entries subscriptions:"
-msgstr "Adresse email de l'expéditeur des notifications :"
+msgstr "Adresse e-mail de l'expéditeur des notifications :"
 
 #: src/BackendBehaviors.php:140
 msgid "Leave it empty to disable entries subscriptions."
-msgstr "Laisser vide pour désactiver les notifications par email"
+msgstr "Laisser vide pour désactiver les notifications par e-mail."
 
 #: src/FrontendBehaviors.php:123
 msgid "Unsubscribe"
 msgstr "Se désabonner"
 
 #: src/FrontendBehaviors.php:124
-msgid "No more recieve email when new comment is posted"
-msgstr "Ne plus recevoir d'email lorsqu'un nouveau commentaire est posté"
+msgid "No more receive email when new comment is posted"
+msgstr "Ne plus recevoir d'e-mail lorsqu'un nouveau commentaire est publié"
 
 #: src/FrontendBehaviors.php:124
 msgid "Receive an email when new comment is posted"
-msgstr "Recevoir un email lorsqu'un nouveau commentaire est posté"
+msgstr "Recevoir un e-mail lorsqu'un nouveau commentaire est publié"
 
 #: src/FrontendBehaviors.php:188
 msgid "Reading tracking"
 msgstr "Suivi de lecture"
 
 #: src/FrontendBehaviors.php:220
-msgid "Remove email notifiaction from all entries"
-msgstr "Retirer les notifications par email des tous les billets"
+msgid "Remove email notification from all entries"
+msgstr "Retirer les notifications par e-mail de tous les billets"
 
 #: src/ReadingTracking.php:318
 msgid "Do not use artifact"
-msgstr "Ne pas utiliser l'artefact"
+msgstr "Ne pas utiliser d'icône"
 
 #: src/ReadingTracking.php:485
 msgid "New comment"
@@ -85,7 +85,7 @@ msgstr "Nouveau commentaire"
 
 #: src/ReadingTracking.php:488
 msgid "You receive this email as you have subscribed to new comments on an entry."
-msgstr "Vous recevez cet email car vous avez souscrit aux notifications de nouveau commentaire sur un billet."
+msgstr "Vous recevez cet e-mail car vous êtes abonné aux nouveaux commentaires d'un billet."
 
 #: src/ReadingTracking.php:490
 msgid "Entry:"
@@ -99,3 +99,18 @@ msgstr "Suivez ce lien pour voir les nouveaux commentaires ou pour vous désabon
 msgid "Thank you %s for your interest on our blog."
 msgstr "Merci %s pour l'intérêt porté à ce blog."
 
+
+msgid "Subscribe"
+msgstr "S'abonner"
+
+msgid "Save"
+msgstr "Enregistrer"
+
+msgid "Profile successfully updated."
+msgstr "Profil mis à jour avec succès."
+
+msgid "Site:"
+msgstr "Site :"
+
+msgid "URL:"
+msgstr "URL :"
